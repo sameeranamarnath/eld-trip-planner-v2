@@ -1,0 +1,1862 @@
+{
+  "input": {
+    "current_location": "Green Bay, WI",
+    "pickup_location": "Chicago, IL",
+    "dropoff_location": "Nashville, TN",
+    "cycle_used_hours": 35,
+    "departure_time": "2026-10-01T06:30:00"
+  },
+  "places": {
+    "current": {
+      "label": "Green Bay, Brown County, Wisconsin, United States",
+      "short_label": "Green Bay, WI",
+      "city": "Green Bay",
+      "state": "WI",
+      "country": "United States",
+      "lat": 44.512638,
+      "lng": -88.012579,
+      "source": "nominatim"
+    },
+    "pickup": {
+      "label": "Chicago, South Chicago Township, Cook County, Illinois, United States",
+      "short_label": "Chicago, IL",
+      "city": "Chicago",
+      "state": "IL",
+      "country": "United States",
+      "lat": 41.875562,
+      "lng": -87.624421,
+      "source": "nominatim"
+    },
+    "dropoff": {
+      "label": "Nashville, Davidson County, Middle Tennessee, Tennessee, United States",
+      "short_label": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN",
+      "country": "United States",
+      "lat": 36.162277,
+      "lng": -86.774298,
+      "source": "nominatim"
+    }
+  },
+  "route": {
+    "distance_miles": 672.3,
+    "duration_hours": 12.88,
+    "geometry": [
+      [
+        44.51264,
+        -88.0125
+      ],
+      [
+        44.47655,
+        -88.03602
+      ],
+      [
+        44.45465,
+        -87.99039
+      ],
+      [
+        44.43971,
+        -87.93226
+      ],
+      [
+        44.40958,
+        -87.89196
+      ],
+      [
+        44.37143,
+        -87.8618
+      ],
+      [
+        44.33113,
+        -87.83785
+      ],
+      [
+        44.31083,
+        -87.78641
+      ],
+      [
+        44.26608,
+        -87.78215
+      ],
+      [
+        44.22542,
+        -87.76684
+      ],
+      [
+        44.19277,
+        -87.7307
+      ],
+      [
+        44.14726,
+        -87.73217
+      ],
+      [
+        44.10386,
+        -87.73062
+      ],
+      [
+        44.06494,
+        -87.70621
+      ],
+      [
+        44.0195,
+        -87.71187
+      ],
+      [
+        43.97945,
+        -87.73361
+      ],
+      [
+        43.92803,
+        -87.75879
+      ],
+      [
+        43.88626,
+        -87.77141
+      ],
+      [
+        43.83702,
+        -87.77171
+      ],
+      [
+        43.79368,
+        -87.76432
+      ],
+      [
+        43.75033,
+        -87.76308
+      ],
+      [
+        43.70722,
+        -87.76075
+      ],
+      [
+        43.6635,
+        -87.76376
+      ],
+      [
+        43.61999,
+        -87.77049
+      ],
+      [
+        43.57617,
+        -87.79461
+      ],
+      [
+        43.53518,
+        -87.8177
+      ],
+      [
+        43.49072,
+        -87.83132
+      ],
+      [
+        43.44709,
+        -87.83363
+      ],
+      [
+        43.41278,
+        -87.86942
+      ],
+      [
+        43.40241,
+        -87.92719
+      ],
+      [
+        43.35316,
+        -87.92518
+      ],
+      [
+        43.30908,
+        -87.92081
+      ],
+      [
+        43.2651,
+        -87.92002
+      ],
+      [
+        43.22143,
+        -87.92154
+      ],
+      [
+        43.1788,
+        -87.91838
+      ],
+      [
+        43.13519,
+        -87.91354
+      ],
+      [
+        43.09346,
+        -87.92235
+      ],
+      [
+        43.05063,
+        -87.92584
+      ],
+      [
+        43.00845,
+        -87.91622
+      ],
+      [
+        42.96631,
+        -87.92588
+      ],
+      [
+        42.925,
+        -87.93561
+      ],
+      [
+        42.87822,
+        -87.93716
+      ],
+      [
+        42.83621,
+        -87.95269
+      ],
+      [
+        42.79257,
+        -87.95363
+      ],
+      [
+        42.74647,
+        -87.95418
+      ],
+      [
+        42.69906,
+        -87.95394
+      ],
+      [
+        42.65519,
+        -87.95285
+      ],
+      [
+        42.61057,
+        -87.95238
+      ],
+      [
+        42.56435,
+        -87.95283
+      ],
+      [
+        42.51951,
+        -87.95192
+      ],
+      [
+        42.47621,
+        -87.94747
+      ],
+      [
+        42.43425,
+        -87.93814
+      ],
+      [
+        42.3929,
+        -87.92668
+      ],
+      [
+        42.36025,
+        -87.89491
+      ],
+      [
+        42.31854,
+        -87.88004
+      ],
+      [
+        42.27639,
+        -87.86975
+      ],
+      [
+        42.23619,
+        -87.85649
+      ],
+      [
+        42.19707,
+        -87.83093
+      ],
+      [
+        42.15857,
+        -87.8048
+      ],
+      [
+        42.11923,
+        -87.77961
+      ],
+      [
+        42.07914,
+        -87.75873
+      ],
+      [
+        42.0378,
+        -87.76591
+      ],
+      [
+        42.0005,
+        -87.74907
+      ],
+      [
+        41.95961,
+        -87.74156
+      ],
+      [
+        41.93234,
+        -87.69652
+      ],
+      [
+        41.90035,
+        -87.66068
+      ],
+      [
+        41.87732,
+        -87.62439
+      ],
+      [
+        41.83622,
+        -87.63098
+      ],
+      [
+        41.79264,
+        -87.63131
+      ],
+      [
+        41.76046,
+        -87.60075
+      ],
+      [
+        41.72964,
+        -87.55783
+      ],
+      [
+        41.69658,
+        -87.52215
+      ],
+      [
+        41.65401,
+        -87.51519
+      ],
+      [
+        41.61693,
+        -87.48873
+      ],
+      [
+        41.61023,
+        -87.43118
+      ],
+      [
+        41.60944,
+        -87.37308
+      ],
+      [
+        41.60066,
+        -87.31852
+      ],
+      [
+        41.56777,
+        -87.30207
+      ],
+      [
+        41.5223,
+        -87.31763
+      ],
+      [
+        41.47917,
+        -87.32286
+      ],
+      [
+        41.43274,
+        -87.32162
+      ],
+      [
+        41.38958,
+        -87.32609
+      ],
+      [
+        41.3474,
+        -87.31197
+      ],
+      [
+        41.30117,
+        -87.30138
+      ],
+      [
+        41.25775,
+        -87.29565
+      ],
+      [
+        41.21429,
+        -87.29329
+      ],
+      [
+        41.17234,
+        -87.2767
+      ],
+      [
+        41.12982,
+        -87.26581
+      ],
+      [
+        41.08668,
+        -87.2678
+      ],
+      [
+        41.04275,
+        -87.27121
+      ],
+      [
+        40.9994,
+        -87.26693
+      ],
+      [
+        40.96041,
+        -87.23466
+      ],
+      [
+        40.92018,
+        -87.21711
+      ],
+      [
+        40.8777,
+        -87.19612
+      ],
+      [
+        40.82936,
+        -87.16893
+      ],
+      [
+        40.79355,
+        -87.13856
+      ],
+      [
+        40.754,
+        -87.11066
+      ],
+      [
+        40.70401,
+        -87.06798
+      ],
+      [
+        40.66721,
+        -87.04036
+      ],
+      [
+        40.63154,
+        -87.00281
+      ],
+      [
+        40.59451,
+        -86.97181
+      ],
+      [
+        40.55249,
+        -86.92926
+      ],
+      [
+        40.51497,
+        -86.89452
+      ],
+      [
+        40.48302,
+        -86.85671
+      ],
+      [
+        40.44157,
+        -86.83955
+      ],
+      [
+        40.40609,
+        -86.80713
+      ],
+      [
+        40.36697,
+        -86.78121
+      ],
+      [
+        40.3261,
+        -86.75325
+      ],
+      [
+        40.29189,
+        -86.70913
+      ],
+      [
+        40.26591,
+        -86.65977
+      ],
+      [
+        40.23038,
+        -86.61977
+      ],
+      [
+        40.20086,
+        -86.57781
+      ],
+      [
+        40.15884,
+        -86.54201
+      ],
+      [
+        40.11823,
+        -86.51545
+      ],
+      [
+        40.07575,
+        -86.4996
+      ],
+      [
+        40.03627,
+        -86.47579
+      ],
+      [
+        40.00724,
+        -86.42649
+      ],
+      [
+        39.97516,
+        -86.38819
+      ],
+      [
+        39.94282,
+        -86.34938
+      ],
+      [
+        39.90666,
+        -86.31759
+      ],
+      [
+        39.87206,
+        -86.28376
+      ],
+      [
+        39.84092,
+        -86.24749
+      ],
+      [
+        39.82358,
+        -86.20121
+      ],
+      [
+        39.79725,
+        -86.16539
+      ],
+      [
+        39.77254,
+        -86.14284
+      ],
+      [
+        39.73114,
+        -86.13667
+      ],
+      [
+        39.69598,
+        -86.10633
+      ],
+      [
+        39.65717,
+        -86.07767
+      ],
+      [
+        39.61422,
+        -86.07387
+      ],
+      [
+        39.56155,
+        -86.04891
+      ],
+      [
+        39.52011,
+        -86.02442
+      ],
+      [
+        39.47655,
+        -86.01216
+      ],
+      [
+        39.43697,
+        -85.98302
+      ],
+      [
+        39.4031,
+        -85.94754
+      ],
+      [
+        39.35837,
+        -85.94254
+      ],
+      [
+        39.31607,
+        -85.95057
+      ],
+      [
+        39.27571,
+        -85.95526
+      ],
+      [
+        39.22922,
+        -85.95431
+      ],
+      [
+        39.18082,
+        -85.95877
+      ],
+      [
+        39.13726,
+        -85.95821
+      ],
+      [
+        39.0946,
+        -85.94103
+      ],
+      [
+        39.05257,
+        -85.91549
+      ],
+      [
+        39.01853,
+        -85.88026
+      ],
+      [
+        38.98603,
+        -85.84368
+      ],
+      [
+        38.9415,
+        -85.84326
+      ],
+      [
+        38.90243,
+        -85.82133
+      ],
+      [
+        38.86119,
+        -85.81005
+      ],
+      [
+        38.81717,
+        -85.81943
+      ],
+      [
+        38.77706,
+        -85.83291
+      ],
+      [
+        38.73586,
+        -85.81578
+      ],
+      [
+        38.69732,
+        -85.78978
+      ],
+      [
+        38.65365,
+        -85.78375
+      ],
+      [
+        38.60759,
+        -85.78163
+      ],
+      [
+        38.56385,
+        -85.77899
+      ],
+      [
+        38.5188,
+        -85.77306
+      ],
+      [
+        38.47546,
+        -85.77011
+      ],
+      [
+        38.43081,
+        -85.76509
+      ],
+      [
+        38.38576,
+        -85.76038
+      ],
+      [
+        38.34274,
+        -85.75414
+      ],
+      [
+        38.29882,
+        -85.75386
+      ],
+      [
+        38.25922,
+        -85.74113
+      ],
+      [
+        38.22052,
+        -85.75166
+      ],
+      [
+        38.18702,
+        -85.72657
+      ],
+      [
+        38.14629,
+        -85.71192
+      ],
+      [
+        38.10424,
+        -85.70126
+      ],
+      [
+        38.05955,
+        -85.69918
+      ],
+      [
+        38.01519,
+        -85.69675
+      ],
+      [
+        37.97393,
+        -85.69618
+      ],
+      [
+        37.92983,
+        -85.6881
+      ],
+      [
+        37.88804,
+        -85.69931
+      ],
+      [
+        37.84608,
+        -85.71546
+      ],
+      [
+        37.80922,
+        -85.74319
+      ],
+      [
+        37.77762,
+        -85.77602
+      ],
+      [
+        37.74215,
+        -85.79654
+      ],
+      [
+        37.71046,
+        -85.82978
+      ],
+      [
+        37.67122,
+        -85.85229
+      ],
+      [
+        37.6273,
+        -85.86213
+      ],
+      [
+        37.58353,
+        -85.87161
+      ],
+      [
+        37.53639,
+        -85.88183
+      ],
+      [
+        37.49459,
+        -85.88201
+      ],
+      [
+        37.4504,
+        -85.8835
+      ],
+      [
+        37.40598,
+        -85.88161
+      ],
+      [
+        37.36376,
+        -85.89422
+      ],
+      [
+        37.32199,
+        -85.9061
+      ],
+      [
+        37.27998,
+        -85.91027
+      ],
+      [
+        37.23766,
+        -85.92873
+      ],
+      [
+        37.19488,
+        -85.93867
+      ],
+      [
+        37.15956,
+        -85.96996
+      ],
+      [
+        37.12363,
+        -85.99455
+      ],
+      [
+        37.10559,
+        -86.04323
+      ],
+      [
+        37.07577,
+        -86.08168
+      ],
+      [
+        37.05541,
+        -86.12962
+      ],
+      [
+        37.04144,
+        -86.18186
+      ],
+      [
+        37.03646,
+        -86.2354
+      ],
+      [
+        37.01576,
+        -86.28068
+      ],
+      [
+        37.0115,
+        -86.33575
+      ],
+      [
+        36.99272,
+        -86.38284
+      ],
+      [
+        36.95322,
+        -86.4066
+      ],
+      [
+        36.91259,
+        -86.43094
+      ],
+      [
+        36.87078,
+        -86.44945
+      ],
+      [
+        36.82859,
+        -86.468
+      ],
+      [
+        36.78594,
+        -86.47628
+      ],
+      [
+        36.74543,
+        -86.496
+      ],
+      [
+        36.70985,
+        -86.52544
+      ],
+      [
+        36.67129,
+        -86.55137
+      ],
+      [
+        36.63122,
+        -86.5738
+      ],
+      [
+        36.59266,
+        -86.59889
+      ],
+      [
+        36.55573,
+        -86.62864
+      ],
+      [
+        36.51582,
+        -86.6508
+      ],
+      [
+        36.4777,
+        -86.67857
+      ],
+      [
+        36.43673,
+        -86.70656
+      ],
+      [
+        36.39744,
+        -86.7175
+      ],
+      [
+        36.35602,
+        -86.7204
+      ],
+      [
+        36.31453,
+        -86.70135
+      ],
+      [
+        36.27991,
+        -86.73368
+      ],
+      [
+        36.24058,
+        -86.75217
+      ],
+      [
+        36.20618,
+        -86.77653
+      ],
+      [
+        36.1653,
+        -86.76751
+      ],
+      [
+        36.16225,
+        -86.77437
+      ]
+    ],
+    "bounds": {
+      "min_lat": 36.158372,
+      "max_lat": 44.512999,
+      "min_lng": -88.0393,
+      "max_lng": -85.687337
+    },
+    "legs": [
+      {
+        "index": 0,
+        "from": "Green Bay, WI",
+        "to": "Chicago, IL",
+        "distance_miles": 203.9,
+        "duration_hours": 4.02
+      },
+      {
+        "index": 1,
+        "from": "Chicago, IL",
+        "to": "Nashville, TN",
+        "distance_miles": 468.4,
+        "duration_hours": 8.86
+      }
+    ],
+    "provider": "osrm"
+  },
+  "stops": [
+    {
+      "type": "inspection",
+      "title": "Pre-trip inspection",
+      "icon": "check",
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "note": "Pre-trip inspection",
+      "location": "Green Bay, WI",
+      "city": "Green Bay",
+      "state": "WI",
+      "lat": 44.512635,
+      "lng": -88.0125,
+      "arrive": "2026-10-01T06:30:00",
+      "depart": "2026-10-01T07:00:00",
+      "arrive_time": "Thu 06:30",
+      "depart_time": "Thu 07:00",
+      "duration_min": 30,
+      "miles_from_start": 0,
+      "date": "2026-10-01"
+    },
+    {
+      "type": "pickup",
+      "title": "Pickup",
+      "icon": "package",
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "note": "Pickup - loading freight, BOL signed",
+      "location": "Chicago, IL",
+      "city": "Chicago",
+      "state": "IL",
+      "lat": 41.874877,
+      "lng": -87.624338,
+      "arrive": "2026-10-01T11:00:58.400000",
+      "depart": "2026-10-01T12:00:58.400000",
+      "arrive_time": "Thu 11:00",
+      "depart_time": "Thu 12:00",
+      "duration_min": 60,
+      "miles_from_start": 203.9,
+      "date": "2026-10-01"
+    },
+    {
+      "type": "rest",
+      "title": "10-hour reset",
+      "icon": "bed",
+      "status": "off_duty",
+      "status_label": "Off Duty",
+      "note": "10-hour reset",
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "arrive": "2026-10-01T19:00:00",
+      "depart": "2026-10-02T05:00:00",
+      "arrive_time": "Thu 19:00",
+      "depart_time": "Fri 05:00",
+      "duration_min": 600,
+      "miles_from_start": 573,
+      "date": "2026-10-01"
+    },
+    {
+      "type": "inspection",
+      "title": "Pre-trip inspection",
+      "icon": "check",
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "note": "Pre-trip inspection",
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "arrive": "2026-10-02T05:00:00",
+      "depart": "2026-10-02T05:30:00",
+      "arrive_time": "Fri 05:00",
+      "depart_time": "Fri 05:30",
+      "duration_min": 30,
+      "miles_from_start": 573,
+      "date": "2026-10-02"
+    },
+    {
+      "type": "dropoff",
+      "title": "Drop-off",
+      "icon": "flag",
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "note": "Dropoff - unloading freight, POD signed",
+      "location": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN",
+      "lat": 36.162248,
+      "lng": -86.774367,
+      "arrive": "2026-10-02T07:22:37.600000",
+      "depart": "2026-10-02T08:22:37.600000",
+      "arrive_time": "Fri 07:22",
+      "depart_time": "Fri 08:22",
+      "duration_min": 60,
+      "miles_from_start": 672.3,
+      "date": "2026-10-02"
+    },
+    {
+      "type": "inspection",
+      "title": "Post-trip inspection",
+      "icon": "check",
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "note": "Post-trip inspection",
+      "location": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN",
+      "lat": 36.162248,
+      "lng": -86.774367,
+      "arrive": "2026-10-02T08:22:37.600000",
+      "depart": "2026-10-02T08:52:37.600000",
+      "arrive_time": "Fri 08:22",
+      "depart_time": "Fri 08:52",
+      "duration_min": 30,
+      "miles_from_start": 672.3,
+      "date": "2026-10-02"
+    }
+  ],
+  "segments": [
+    {
+      "status": "off_duty",
+      "status_label": "Off Duty",
+      "line": 1,
+      "start": "2026-10-01T00:00:00",
+      "end": "2026-10-01T06:30:00",
+      "kind": "prior_off",
+      "note": "Off duty - before shift",
+      "lat": 44.512635,
+      "lng": -88.0125,
+      "miles": 0,
+      "stationary": true,
+      "location": "Green Bay, WI",
+      "city": "Green Bay",
+      "state": "WI"
+    },
+    {
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "line": 4,
+      "start": "2026-10-01T06:30:00",
+      "end": "2026-10-01T07:00:00",
+      "kind": "pretrip",
+      "note": "Pre-trip inspection",
+      "lat": 44.512635,
+      "lng": -88.0125,
+      "miles": 0,
+      "stationary": true,
+      "location": "Green Bay, WI",
+      "city": "Green Bay",
+      "state": "WI"
+    },
+    {
+      "status": "driving",
+      "status_label": "Driving",
+      "line": 3,
+      "start": "2026-10-01T07:00:00",
+      "end": "2026-10-01T11:00:58.400000",
+      "kind": "drive",
+      "note": "Driving",
+      "lat": 44.512635,
+      "lng": -88.0125,
+      "miles": 203.9,
+      "stationary": false,
+      "location": "Green Bay, WI",
+      "city": "Green Bay",
+      "state": "WI"
+    },
+    {
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "line": 4,
+      "start": "2026-10-01T11:00:58.400000",
+      "end": "2026-10-01T12:00:58.400000",
+      "kind": "pickup",
+      "note": "Pickup - loading freight, BOL signed",
+      "lat": 41.874877,
+      "lng": -87.624338,
+      "miles": 0,
+      "stationary": true,
+      "location": "Chicago, IL",
+      "city": "Chicago",
+      "state": "IL"
+    },
+    {
+      "status": "driving",
+      "status_label": "Driving",
+      "line": 3,
+      "start": "2026-10-01T12:00:58.400000",
+      "end": "2026-10-01T19:00:00",
+      "kind": "drive",
+      "note": "Driving",
+      "lat": 41.874877,
+      "lng": -87.624338,
+      "miles": 369.2,
+      "stationary": false,
+      "location": "Chicago, IL",
+      "city": "Chicago",
+      "state": "IL"
+    },
+    {
+      "status": "off_duty",
+      "status_label": "Off Duty",
+      "line": 1,
+      "start": "2026-10-01T19:00:00",
+      "end": "2026-10-01T20:00:00",
+      "kind": "reset_off",
+      "note": "Off duty (end of shift)",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "miles": 0,
+      "stationary": true,
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY"
+    },
+    {
+      "status": "sleeper_berth",
+      "status_label": "Sleeper Berth",
+      "line": 2,
+      "start": "2026-10-01T20:00:00",
+      "end": "2026-10-02T05:00:00",
+      "kind": "reset_sleeper",
+      "note": "Sleeper berth (10-hour reset)",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "miles": 0,
+      "stationary": true,
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY"
+    },
+    {
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "line": 4,
+      "start": "2026-10-02T05:00:00",
+      "end": "2026-10-02T05:30:00",
+      "kind": "pretrip",
+      "note": "Pre-trip inspection",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "miles": 0,
+      "stationary": true,
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY"
+    },
+    {
+      "status": "driving",
+      "status_label": "Driving",
+      "line": 3,
+      "start": "2026-10-02T05:30:00",
+      "end": "2026-10-02T07:22:37.600000",
+      "kind": "drive",
+      "note": "Driving",
+      "lat": 37.250133,
+      "lng": -85.925658,
+      "miles": 99.2,
+      "stationary": false,
+      "location": "Horse Cave, KY",
+      "city": "Horse Cave",
+      "state": "KY"
+    },
+    {
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "line": 4,
+      "start": "2026-10-02T07:22:37.600000",
+      "end": "2026-10-02T08:22:37.600000",
+      "kind": "dropoff",
+      "note": "Dropoff - unloading freight, POD signed",
+      "lat": 36.162248,
+      "lng": -86.774367,
+      "miles": 0,
+      "stationary": true,
+      "location": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN"
+    },
+    {
+      "status": "on_duty_not_driving",
+      "status_label": "On Duty (Not Driving)",
+      "line": 4,
+      "start": "2026-10-02T08:22:37.600000",
+      "end": "2026-10-02T08:52:37.600000",
+      "kind": "posttrip",
+      "note": "Post-trip inspection",
+      "lat": 36.162248,
+      "lng": -86.774367,
+      "miles": 0,
+      "stationary": true,
+      "location": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN"
+    },
+    {
+      "status": "off_duty",
+      "status_label": "Off Duty",
+      "line": 1,
+      "start": "2026-10-02T08:52:37.600000",
+      "end": "2026-10-03T00:00:00",
+      "kind": "post_off",
+      "note": "Off duty - end of trip",
+      "lat": 36.162248,
+      "lng": -86.774367,
+      "miles": 0,
+      "stationary": true,
+      "location": "Nashville, TN",
+      "city": "Nashville",
+      "state": "TN"
+    }
+  ],
+  "logs": [
+    {
+      "date": "2026-10-01",
+      "day_index": 1,
+      "header": {
+        "driver_name": "J. Driver",
+        "driver_number": "SCH-4471",
+        "co_driver": "N/A",
+        "home_terminal": "Green Bay, WI",
+        "carrier": "Spotter Freight Systems",
+        "tractor_number": "T-1042",
+        "trailer_number": "TR-5580",
+        "shipper": "Don's Paper Company",
+        "commodity": "Paper products",
+        "load_id": "LD-88231",
+        "date": "2026-10-01",
+        "day_index": 1,
+        "day_label": "Thu, Oct 01, 2026"
+      },
+      "entries": [
+        {
+          "status": "off_duty",
+          "status_label": "Off Duty",
+          "line": 1,
+          "start_min": 0,
+          "end_min": 390,
+          "start_time": "00:00",
+          "end_time": "06:30",
+          "duration_min": 390,
+          "kind": "prior_off",
+          "note": "Off duty - before shift",
+          "location": "Green Bay, WI",
+          "city": "Green Bay",
+          "state": "WI",
+          "lat": 44.512635,
+          "lng": -88.0125,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "start_min": 390,
+          "end_min": 420,
+          "start_time": "06:30",
+          "end_time": "07:00",
+          "duration_min": 30,
+          "kind": "pretrip",
+          "note": "Pre-trip inspection",
+          "location": "Green Bay, WI",
+          "city": "Green Bay",
+          "state": "WI",
+          "lat": 44.512635,
+          "lng": -88.0125,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "start_min": 420,
+          "end_min": 660.97,
+          "start_time": "07:00",
+          "end_time": "11:01",
+          "duration_min": 240.97,
+          "kind": "drive",
+          "note": "Driving",
+          "location": "Green Bay, WI",
+          "city": "Green Bay",
+          "state": "WI",
+          "lat": 44.512635,
+          "lng": -88.0125,
+          "miles": 203.9,
+          "stationary": false
+        },
+        {
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "start_min": 660.97,
+          "end_min": 720.97,
+          "start_time": "11:01",
+          "end_time": "12:01",
+          "duration_min": 60,
+          "kind": "pickup",
+          "note": "Pickup - loading freight, BOL signed",
+          "location": "Chicago, IL",
+          "city": "Chicago",
+          "state": "IL",
+          "lat": 41.874877,
+          "lng": -87.624338,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "start_min": 720.97,
+          "end_min": 1140,
+          "start_time": "12:01",
+          "end_time": "19:00",
+          "duration_min": 419.03,
+          "kind": "drive",
+          "note": "Driving",
+          "location": "Chicago, IL",
+          "city": "Chicago",
+          "state": "IL",
+          "lat": 41.874877,
+          "lng": -87.624338,
+          "miles": 369.2,
+          "stationary": false
+        },
+        {
+          "status": "off_duty",
+          "status_label": "Off Duty",
+          "line": 1,
+          "start_min": 1140,
+          "end_min": 1200,
+          "start_time": "19:00",
+          "end_time": "20:00",
+          "duration_min": 60,
+          "kind": "reset_off",
+          "note": "Off duty (end of shift)",
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "lat": 37.250133,
+          "lng": -85.925658,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "sleeper_berth",
+          "status_label": "Sleeper Berth",
+          "line": 2,
+          "start_min": 1200,
+          "end_min": 1440,
+          "start_time": "20:00",
+          "end_time": "00:00",
+          "duration_min": 240,
+          "kind": "reset_sleeper",
+          "note": "Sleeper berth (10-hour reset)",
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "lat": 37.250133,
+          "lng": -85.925658,
+          "miles": 0,
+          "stationary": true
+        }
+      ],
+      "remarks": [
+        {
+          "index": 1,
+          "at_min": 390,
+          "time": "06:30",
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "location": "Green Bay, WI",
+          "city": "Green Bay",
+          "state": "WI",
+          "note": "Pre-trip inspection",
+          "kind": "pretrip",
+          "continued": false
+        },
+        {
+          "index": 2,
+          "at_min": 420,
+          "time": "07:00",
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "location": "Green Bay, WI",
+          "city": "Green Bay",
+          "state": "WI",
+          "note": "Driving",
+          "kind": "drive",
+          "continued": false
+        },
+        {
+          "index": 3,
+          "at_min": 660.97,
+          "time": "11:01",
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "location": "Chicago, IL",
+          "city": "Chicago",
+          "state": "IL",
+          "note": "Pickup - loading freight, BOL signed",
+          "kind": "pickup",
+          "continued": false
+        },
+        {
+          "index": 4,
+          "at_min": 720.97,
+          "time": "12:01",
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "location": "Chicago, IL",
+          "city": "Chicago",
+          "state": "IL",
+          "note": "Driving",
+          "kind": "drive",
+          "continued": false
+        },
+        {
+          "index": 5,
+          "at_min": 1140,
+          "time": "19:00",
+          "status": "off_duty",
+          "status_label": "Off Duty",
+          "line": 1,
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "note": "Off duty (end of shift)",
+          "kind": "reset_off",
+          "continued": false
+        },
+        {
+          "index": 6,
+          "at_min": 1200,
+          "time": "20:00",
+          "status": "sleeper_berth",
+          "status_label": "Sleeper Berth",
+          "line": 2,
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "note": "Sleeper berth (10-hour reset)",
+          "kind": "reset_sleeper",
+          "continued": false
+        }
+      ],
+      "totals": {
+        "off_duty": {
+          "minutes": 450,
+          "hours": 7.5,
+          "hhmm": "7:30",
+          "label": "Off Duty",
+          "line": 1
+        },
+        "sleeper_berth": {
+          "minutes": 240,
+          "hours": 4,
+          "hhmm": "4:00",
+          "label": "Sleeper Berth",
+          "line": 2
+        },
+        "driving": {
+          "minutes": 660,
+          "hours": 11,
+          "hhmm": "11:00",
+          "label": "Driving",
+          "line": 3
+        },
+        "on_duty_not_driving": {
+          "minutes": 90,
+          "hours": 1.5,
+          "hhmm": "1:30",
+          "label": "On Duty (Not Driving)",
+          "line": 4
+        }
+      },
+      "total_hours": 24,
+      "total_hours_hhmm": "24:00",
+      "miles_driving": 573,
+      "miles_truck": 573,
+      "mileage_entries": [
+        {
+          "time": "00:00",
+          "note": "Begin day",
+          "location": "Green Bay, WI",
+          "odometer": 142500,
+          "trip_miles": 0
+        },
+        {
+          "time": "23:59",
+          "note": "End day",
+          "location": "Horse Cave, KY",
+          "odometer": 143073,
+          "trip_miles": 573
+        }
+      ],
+      "recap": {
+        "cycle": "70-hour / 8-day",
+        "cycle_limit_hours": 70,
+        "hours_on_duty_today": 12.5,
+        "hours_on_duty_today_hhmm": "12:30",
+        "hours_previous_seven_days": 35,
+        "hours_previous_seven_days_hhmm": "35:00",
+        "total_hours_on_duty": 47.5,
+        "total_hours_on_duty_hhmm": "47:30",
+        "hours_available_tomorrow": 22.5,
+        "hours_available_tomorrow_hhmm": "22:30"
+      }
+    },
+    {
+      "date": "2026-10-02",
+      "day_index": 2,
+      "header": {
+        "driver_name": "J. Driver",
+        "driver_number": "SCH-4471",
+        "co_driver": "N/A",
+        "home_terminal": "Green Bay, WI",
+        "carrier": "Spotter Freight Systems",
+        "tractor_number": "T-1042",
+        "trailer_number": "TR-5580",
+        "shipper": "Don's Paper Company",
+        "commodity": "Paper products",
+        "load_id": "LD-88231",
+        "date": "2026-10-02",
+        "day_index": 2,
+        "day_label": "Fri, Oct 02, 2026"
+      },
+      "entries": [
+        {
+          "status": "sleeper_berth",
+          "status_label": "Sleeper Berth",
+          "line": 2,
+          "start_min": 0,
+          "end_min": 300,
+          "start_time": "00:00",
+          "end_time": "05:00",
+          "duration_min": 300,
+          "kind": "reset_sleeper",
+          "note": "Sleeper berth (10-hour reset)",
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "lat": 37.250133,
+          "lng": -85.925658,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "start_min": 300,
+          "end_min": 330,
+          "start_time": "05:00",
+          "end_time": "05:30",
+          "duration_min": 30,
+          "kind": "pretrip",
+          "note": "Pre-trip inspection",
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "lat": 37.250133,
+          "lng": -85.925658,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "start_min": 330,
+          "end_min": 442.63,
+          "start_time": "05:30",
+          "end_time": "07:23",
+          "duration_min": 112.63,
+          "kind": "drive",
+          "note": "Driving",
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "lat": 37.250133,
+          "lng": -85.925658,
+          "miles": 99.2,
+          "stationary": false
+        },
+        {
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "start_min": 442.63,
+          "end_min": 502.63,
+          "start_time": "07:23",
+          "end_time": "08:23",
+          "duration_min": 60,
+          "kind": "dropoff",
+          "note": "Dropoff - unloading freight, POD signed",
+          "location": "Nashville, TN",
+          "city": "Nashville",
+          "state": "TN",
+          "lat": 36.162248,
+          "lng": -86.774367,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "start_min": 502.63,
+          "end_min": 532.63,
+          "start_time": "08:23",
+          "end_time": "08:53",
+          "duration_min": 30,
+          "kind": "posttrip",
+          "note": "Post-trip inspection",
+          "location": "Nashville, TN",
+          "city": "Nashville",
+          "state": "TN",
+          "lat": 36.162248,
+          "lng": -86.774367,
+          "miles": 0,
+          "stationary": true
+        },
+        {
+          "status": "off_duty",
+          "status_label": "Off Duty",
+          "line": 1,
+          "start_min": 532.63,
+          "end_min": 1440,
+          "start_time": "08:53",
+          "end_time": "00:00",
+          "duration_min": 907.37,
+          "kind": "post_off",
+          "note": "Off duty - end of trip",
+          "location": "Nashville, TN",
+          "city": "Nashville",
+          "state": "TN",
+          "lat": 36.162248,
+          "lng": -86.774367,
+          "miles": 0,
+          "stationary": true
+        }
+      ],
+      "remarks": [
+        {
+          "index": 1,
+          "at_min": 0,
+          "time": "00:00",
+          "status": "sleeper_berth",
+          "status_label": "Sleeper Berth",
+          "line": 2,
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "note": "Sleeper berth (10-hour reset)",
+          "kind": "reset_sleeper",
+          "continued": true
+        },
+        {
+          "index": 2,
+          "at_min": 300,
+          "time": "05:00",
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "note": "Pre-trip inspection",
+          "kind": "pretrip",
+          "continued": false
+        },
+        {
+          "index": 3,
+          "at_min": 330,
+          "time": "05:30",
+          "status": "driving",
+          "status_label": "Driving",
+          "line": 3,
+          "location": "Horse Cave, KY",
+          "city": "Horse Cave",
+          "state": "KY",
+          "note": "Driving",
+          "kind": "drive",
+          "continued": false
+        },
+        {
+          "index": 4,
+          "at_min": 442.63,
+          "time": "07:23",
+          "status": "on_duty_not_driving",
+          "status_label": "On Duty (Not Driving)",
+          "line": 4,
+          "location": "Nashville, TN",
+          "city": "Nashville",
+          "state": "TN",
+          "note": "Dropoff - unloading freight, POD signed",
+          "kind": "dropoff",
+          "continued": false
+        },
+        {
+          "index": 5,
+          "at_min": 532.63,
+          "time": "08:53",
+          "status": "off_duty",
+          "status_label": "Off Duty",
+          "line": 1,
+          "location": "Nashville, TN",
+          "city": "Nashville",
+          "state": "TN",
+          "note": "Off duty - end of trip",
+          "kind": "post_off",
+          "continued": false
+        }
+      ],
+      "totals": {
+        "off_duty": {
+          "minutes": 907.37,
+          "hours": 15.12,
+          "hhmm": "15:07",
+          "label": "Off Duty",
+          "line": 1
+        },
+        "sleeper_berth": {
+          "minutes": 300,
+          "hours": 5,
+          "hhmm": "5:00",
+          "label": "Sleeper Berth",
+          "line": 2
+        },
+        "driving": {
+          "minutes": 112.63,
+          "hours": 1.88,
+          "hhmm": "1:53",
+          "label": "Driving",
+          "line": 3
+        },
+        "on_duty_not_driving": {
+          "minutes": 120,
+          "hours": 2,
+          "hhmm": "2:00",
+          "label": "On Duty (Not Driving)",
+          "line": 4
+        }
+      },
+      "total_hours": 24,
+      "total_hours_hhmm": "24:00",
+      "miles_driving": 99.2,
+      "miles_truck": 99.2,
+      "mileage_entries": [
+        {
+          "time": "00:00",
+          "note": "Begin day",
+          "location": "Horse Cave, KY",
+          "odometer": 143073,
+          "trip_miles": 573
+        },
+        {
+          "time": "23:59",
+          "note": "End day",
+          "location": "Nashville, TN",
+          "odometer": 143172,
+          "trip_miles": 672
+        }
+      ],
+      "recap": {
+        "cycle": "70-hour / 8-day",
+        "cycle_limit_hours": 70,
+        "hours_on_duty_today": 3.88,
+        "hours_on_duty_today_hhmm": "3:53",
+        "hours_previous_seven_days": 47.5,
+        "hours_previous_seven_days_hhmm": "47:30",
+        "total_hours_on_duty": 51.38,
+        "total_hours_on_duty_hhmm": "51:23",
+        "hours_available_tomorrow": 18.62,
+        "hours_available_tomorrow_hhmm": "18:37"
+      }
+    }
+  ],
+  "summary": {
+    "total_miles": 672.3,
+    "driving_hours": 12.88,
+    "trip_days": 2,
+    "log_sheets": 2,
+    "wall_clock_hours": 26.38,
+    "wall_clock_days": 1.1,
+    "departure": "2026-10-01T06:30:00",
+    "arrival": "2026-10-02T08:52:37.600000",
+    "fuel_stops": 0,
+    "breaks": 0,
+    "rests": 1,
+    "restarts": 0,
+    "cycle_used_hours": 35,
+    "cycle_hours_after_trip": 51.38,
+    "cycle_hours_remaining": 18.62,
+    "rules": {
+      "max_drive_hours": 11,
+      "max_window_hours": 14,
+      "break_after_drive_hours": 8,
+      "reset_off_hours": 10,
+      "cycle": "70 hours / 8 days",
+      "fuel_interval_miles": 1000,
+      "pickup_minutes": 60,
+      "dropoff_minutes": 60
+    }
+  }
+}

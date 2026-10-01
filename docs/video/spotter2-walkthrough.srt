@@ -1,0 +1,125 @@
+1
+00:00:00,000 --> 00:00:09,000
+This is Spotter 2: a trip planner that turns three locations and a cycle-hours
+figure into a legal route and a full set of driver's daily logs.
+
+2
+00:00:09,000 --> 00:00:17,000
+Everything starts in the trip form - and the location fields are live. Typing
+three characters queries the backend's place search, so you pick a real
+geocoded place.
+
+3
+00:00:17,000 --> 00:00:24,000
+Three inputs - where the truck is now, the pickup and the drop-off - plus the
+hours already burned in the 70-hour cycle.
+
+4
+00:00:24,000 --> 00:00:31,000
+An optional panel pins the departure time and fills the log header: carrier,
+tractor, trailer, shipper, commodity and load ID.
+
+5
+00:00:31,000 --> 00:00:35,000
+One click posts the trip to the API.
+
+6
+00:00:35,000 --> 00:00:45,000
+A few seconds later the whole run comes back - miles, arrival time and a
+legality summary.
+
+7
+00:00:45,000 --> 00:00:56,000
+The road route itself comes from OSRM, drawn over OpenStreetMap tiles.
+
+8
+00:00:56,000 --> 00:01:01,000
+Every required stop is pinned on it - rests, fuel, pickup and drop-off - at
+the exact mile it has to happen.
+
+9
+00:01:01,000 --> 00:01:19,000
+The itinerary is the human-readable version of that same plan: each stop with
+its time, place and the reason for it.
+
+10
+00:01:19,000 --> 00:01:27,000
+Summary tiles keep the numbers honest, including how much of the 70-hour cycle
+has been eaten.
+
+11
+00:01:27,000 --> 00:01:37,000
+But the real deliverable is the log book - a fully drawn FMCSA daily log sheet
+for every calendar day of the trip.
+
+12
+00:01:37,000 --> 00:01:48,000
+A 24-hour grid, duty-status lines drawn to the quarter hour, brackets,
+numbered remark flags, per-line totals and the seven-day recap.
+
+13
+00:01:48,000 --> 00:01:56,000
+One sheet per day. Day two carries the tail of the run and closes out the
+cycle.
+
+14
+00:01:56,000 --> 00:02:06,000
+So how does it work? The backend is Django with DRF, and the heart of it is
+the hours-of-service engine.
+
+15
+00:02:06,000 --> 00:02:17,000
+The limits live in one place - eleven driving hours, fourteen on-duty hours, a
+thirty-minute break and the seventy-hour cycle - and every driving chunk is
+capped by the tightest of them.
+
+16
+00:02:17,000 --> 00:02:29,000
+The simulator walks the route leg by leg, and before each chunk it asks what
+the law requires next: a break, a reset, fuel, or a 34-hour restart.
+
+17
+00:02:29,000 --> 00:02:40,000
+One subtlety the tests forced out - on-duty blocks are indivisible, so they
+need their own cycle look-ahead or a block could slip past seventy hours.
+
+18
+00:02:40,000 --> 00:02:50,000
+A second pass turns those segments into 24-hour grids, clipping each day at
+midnight.
+
+19
+00:02:50,000 --> 00:02:59,000
+Remarks follow the regulation: one numbered flag per duty-status change, and
+none for a carry-over block that only squares the grid.
+
+20
+00:02:59,000 --> 00:03:09,000
+The planner wires geocoding, routing and the log builder together into a
+single response.
+
+21
+00:03:09,000 --> 00:03:18,000
+Routing calls OSRM and interpolates position along the returned polyline, so
+any mile marker maps to a real coordinate.
+
+22
+00:03:18,000 --> 00:03:29,000
+And every one of these rules is pinned by a test - the eleven hours, the
+fourteen, the break, the reset and the fuel interval.
+
+23
+00:03:29,000 --> 00:03:41,000
+Forty-three tests covering the engine, the log sheets and the API surface -
+all offline, no network.
+
+24
+00:03:41,000 --> 00:03:51,000
+And the end-to-end contract check - six hundred and thirty-three assertions
+against a real six-hundred-mile trip - passes too.
+
+25
+00:03:51,000 --> 00:04:00,000
+Spotter 2: one POST, a legal route, and finished log sheets you could hand to
+an inspector.
+
