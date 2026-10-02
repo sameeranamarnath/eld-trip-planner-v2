@@ -5,11 +5,14 @@ import RouteMap from './components/RouteMap.jsx'
 import Itinerary from './components/Itinerary.jsx'
 import SummaryPanel from './components/SummaryPanel.jsx'
 import LogBook from './components/LogBook.jsx'
+import Directions from './components/Directions.jsx'
+import HosRulesPanel from './components/HosRulesPanel.jsx'
 import { fetchHealth, planTrip } from './api.js'
 import { toDateTimeInputValue } from './format.js'
 
 const TABS = [
   { id: 'route', label: 'Route & stops', icon: 'route' },
+  { id: 'directions', label: 'Route instructions', icon: 'list' },
   { id: 'logs', label: 'Daily log sheets', icon: 'file' },
 ]
 
@@ -40,10 +43,27 @@ export default function App() {
   const [plan, setPlan] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [tab, setTab] = useState(() => (readQueryParams().get('tab') === 'logs' ? 'logs' : 'route'))
+  const [tab, setTab] = useState(() => {
+    const requested = readQueryParams().get('tab')
+    return TABS.some((entry) => entry.id === requested) ? requested : 'route'
+  })
   const [activePin, setActivePin] = useState(null)
   const [health, setHealth] = useState(null)
+  const [rulesOpen, setRulesOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'light'
+    const stored = window.localStorage?.getItem('spotter-theme')
+    if (stored === 'dark' || stored === 'light') return stored
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
   const submitRef = useRef(null)
+
+  // The theme lives on <html> so the custom properties cascade everywhere,
+  // including the modal, which renders outside this component's own subtree.
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    window.localStorage?.setItem('spotter-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     fetchHealth()
@@ -118,6 +138,23 @@ export default function App() {
                 <b>OSRM</b> + <b>OpenStreetMap</b> live
               </span>
             ) : null}
+            <button
+              type="button"
+              className="fact-chip fact-chip--action"
+              onClick={() => setRulesOpen(true)}
+              aria-haspopup="dialog"
+            >
+              <b>HOS</b> rules
+            </button>
+            <button
+              type="button"
+              className="fact-chip fact-chip--action"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={14} />
+            </button>
           </div>
         </div>
       </header>
@@ -134,13 +171,15 @@ export default function App() {
             />
           </div>
 
-          <div className="column">
+          <div className="column" aria-live="polite" aria-busy={loading}>
             {!plan && !loading ? <EmptyState onSubmit={handleSubmit} /> : null}
             {loading ? <LoadingState /> : null}
 
             {plan && !loading ? (
               <>
-                <SummaryPanel plan={plan} />
+                <div className="no-print">
+                  <SummaryPanel plan={plan} />
+                </div>
 
                 <div className="tabs no-print">
                   {TABS.map((entry) => (
@@ -154,6 +193,9 @@ export default function App() {
                       {entry.label}
                       {entry.id === 'logs' ? (
                         <span className="tab__count">{plan.logs.length}</span>
+                      ) : null}
+                      {entry.id === 'directions' ? (
+                        <span className="tab__count">{plan.directions?.step_count ?? 0}</span>
                       ) : null}
                     </button>
                   ))}
@@ -175,6 +217,8 @@ export default function App() {
                       </div>
                     </div>
                   </div>
+                ) : tab === 'directions' ? (
+                  <Directions plan={plan} />
                 ) : (
                   <LogBook plan={plan} />
                 )}
@@ -183,6 +227,8 @@ export default function App() {
           </div>
         </div>
       </main>
+
+      <HosRulesPanel open={rulesOpen} onClose={() => setRulesOpen(false)} />
     </div>
   )
 }

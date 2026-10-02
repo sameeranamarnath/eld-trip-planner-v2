@@ -4,11 +4,17 @@ A full-stack take-home. Give it where the truck is now, a pickup, a drop-off and
 hours are already used on the 70-hour cycle, and it returns:
 
 - a legal **truck route** on a map, with every required stop pinned at the mile it happens,
-- a filled-out **FMCSA daily log sheet for every calendar day** of the trip.
+- a filled-out **FMCSA daily log sheet for every calendar day** of the trip,
+- a **turn-by-turn instruction list** for the whole route - maneuver, distance, duration and
+  running mileage per step,
+- a printable **PDF of the sheets**, one landscape page per day.
 
 - **Backend** - Django 5.2 + DRF. Stateless: every plan is computed per request, so it
   deploys to serverless or a container with no database.
-- **Frontend** - Vite + React 18 + Leaflet over OpenStreetMap raster tiles.
+- **Frontend** - Vite + React 18 + Leaflet over OpenStreetMap raster tiles. Light and dark
+  themes; the log sheet stays white in both, because it is a paper form.
+- **Accuracy** - the drawn sheet carries all eleven elements 49 CFR 395.8(d) requires, and
+  the header says which time base the grid is on.
 - **Walkthrough video** - [`docs/video/spotter2-walkthrough.mp4`](docs/video/spotter2-walkthrough.mp4)
   (4:00, 1920x1080, burned-in subtitles, `.srt` sidecar).
 
@@ -75,22 +81,27 @@ npm install
 npm run dev                                  # http://127.0.0.1:5173
 ```
 
-In development `vite.config.js` proxies `/api/*` to `http://127.0.0.1:8000`, so either
-leave `VITE_API_BASE_URL` unset or point the backend at port 8000. For a production build
+In development `vite.config.js` proxies `/api/*` to `http://127.0.0.1:8090`, so run the
+backend on **8090** (as above) and leave `VITE_API_BASE_URL` unset. For a production build
 set it to the deployed API origin (see `frontend/.env.example`).
 
 ## Tests
 
 ```bash
 cd backend
-python manage.py test eld                    # 43 tests, fully offline - no network
+python manage.py test eld                    # 52 tests, fully offline - no network
 python scripts/verify_contract.py            # 633 assertions against a real 672-mile trip
+
+cd ../frontend
+npm run lint                                 # ESLint, zero errors
+npm run build
 ```
 
 The offline suite pins each individual rule (the 11 hours, the 14, the break, the reset,
-the fuel interval, the cycle look-ahead). `verify_contract.py` is the end-to-end check: it
-asserts the shape and arithmetic of a real two-day trip, including that both log sheets
-total exactly 24:00 and that the duty lines close the grid.
+the fuel interval, the cycle look-ahead) plus the geocoder ranking, which is what stops a
+bare "Nashville" from being offered as the state abbreviation `TN`. `verify_contract.py` is
+the end-to-end check: it asserts the shape and arithmetic of a real two-day trip, including
+that both log sheets total exactly 24:00 and that the duty lines close the grid.
 
 ## The walkthrough video
 
@@ -110,10 +121,32 @@ python docs/video/make_video.py --skip-render  # re-encode using the existing fr
   VS Code window with real gutter numbers and syntax highlighting, the browser chrome, the
   captions - and headless Edge screenshots it.
 - The app screenshots in `docs/video/assets/app/` were captured from the running app by
-  `frontend/scripts/capture-video.mjs`.
+  `frontend/scripts/capture-video.mjs` (`cd frontend && npm run capture`). The browser
+  driver is a declared devDependency, so a fresh clone can rebuild every asset.
 - ffmpeg concatenates the stills and muxes the `.srt` as a soft `mov_text` track; the script
   then ffprobes its own output and fails if the duration, resolution or subtitle track is
   wrong.
+
+## The recording kit
+
+The brief asks for a **3-5 minute Loom covering the app and the code**. The rehearsal
+material for it lives here:
+
+- [`docs/recording/voiceover-script.md`](docs/recording/voiceover-script.md) - 22 beats with
+  timecodes, the exact words to say, what is on screen at each one, and what to cut first if
+  you run long.
+- [`docs/video/spotter2-loom-reference.mp4`](docs/video/spotter2-loom-reference.mp4) - the
+  same 22 beats as a Loom-style reference: webcam bubble, chapter tag, elapsed clock, a
+  progress bar, and the narration as a teleprompter line. **4:10**, inside the 5-minute cap.
+  It is a target to record against, not the submitted video.
+
+```bash
+python docs/video/make_reference.py                # render frames + encode
+python docs/video/make_reference.py --skip-render  # re-encode using existing frames
+```
+
+The beat table in `docs/video/make_reference.py` and the voiceover script are kept in step
+with each other, so a line change moves its timecode in both.
 
 ## Deployment
 

@@ -12,6 +12,7 @@ class LogHeaderSerializer(serializers.Serializer):
     driver_number = serializers.CharField(max_length=40, required=False)
     co_driver = serializers.CharField(max_length=40, required=False)
     home_terminal = serializers.CharField(max_length=80, required=False)
+    main_office_address = serializers.CharField(max_length=160, required=False)
     carrier = serializers.CharField(max_length=80, required=False)
     tractor_number = serializers.CharField(max_length=40, required=False)
     trailer_number = serializers.CharField(max_length=40, required=False)

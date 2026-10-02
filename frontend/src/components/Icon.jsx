@@ -29,6 +29,18 @@ const PATHS = {
   arrowRight: 'M5 12h14m-6-6 6 6-6 6',
   info: 'M12 16v-5m0-3h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
   x: 'M6 6l12 12M18 6 6 18',
+  sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  moon: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z',
+  // Turn-by-turn maneuver glyphs.
+  straight: 'M12 21V5M12 5l-4.5 4.5M12 5l4.5 4.5',
+  turnRight: 'M7 21v-6a4 4 0 0 1 4-4h7M18 11l-4-4M18 11l-4 4',
+  turnLeft: 'M17 21v-6a4 4 0 0 0-4-4H6M6 11l4-4M6 11l4 4',
+  merge: 'M6 21l6-9 6 9M12 12V4M12 4l-3.5 3.5M12 4l3.5 3.5',
+  ramp: 'M4 20 20 4M20 4h-7M20 4v7',
+  roundabout: 'M20 12a8 8 0 1 1-2.3-5.7M20 6v6h-6',
+  uturn: 'M8 21V11a4 4 0 0 1 8 0v10M16 21l-3-3M16 21l3-3',
+  depart: 'M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18ZM12 16V8m-3 3 3-3 3 3',
+  arrive: 'M5 21V4m0 0h11l-1.5 4L16 12H5',
 }
 
 export default function Icon({ name, size = 18, strokeWidth = 1.9, ...rest }) {

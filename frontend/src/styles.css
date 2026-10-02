@@ -38,6 +38,77 @@
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+/* Dark theme. Only the app chrome flips: the log sheet is a paper form and stays
+   white on purpose, in every theme and on paper. The legend chips are the only
+   rules that hardcode a tint, so they are re-pointed at the palette by hand. */
+:root[data-theme='dark'] {
+  --ink: #e8eef8;
+  --ink-soft: #c4d0e2;
+  --surface: #0e1626;
+  --surface-2: #131d31;
+  --surface-3: #1b2740;
+  --border: #27344d;
+  --border-strong: #3a4a68;
+  --muted: #94a3bb;
+  --muted-2: #75859f;
+  --accent: #5b8cff;
+  --accent-ink: #a6c0ff;
+  --accent-soft: #17233e;
+  --amber: #f0a92b;
+  --amber-soft: #2d2413;
+  --violet: #a78bfa;
+  --violet-soft: #241b3c;
+  --slate: #94a3bb;
+  --slate-soft: #1b2740;
+  --green: #34d399;
+  --green-soft: #11291f;
+  --red: #f87171;
+  --red-soft: #2e1716;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+:root[data-theme='dark'] .select,
+:root[data-theme='dark'] .suggestions,
+:root[data-theme='dark'] .btn--ghost,
+:root[data-theme='dark'] .example-chip,
+:root[data-theme='dark'] .empty__feature {
+  background: var(--surface-2);
+}
+
+:root[data-theme='dark'] .tab--active {
+  background: var(--surface);
+}
+
+:root[data-theme='dark'] .chip--drive {
+  background: var(--accent-soft);
+  border-color: #2b3f6b;
+  color: var(--accent-ink);
+}
+
+:root[data-theme='dark'] .chip--on {
+  border-color: #4a3a1b;
+  color: #f3c268;
+}
+
+:root[data-theme='dark'] .chip--sb {
+  border-color: #3d2f63;
+  color: #c4a9fd;
+}
+
+:root[data-theme='dark'] .chip--off {
+  border-color: #2b3950;
+  color: var(--ink-soft);
+}
+
+/* Paper stays paper. */
+:root[data-theme='dark'] .log-sheet,
+:root[data-theme='dark'] .log-sheet__frame {
+  background: #fff;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -1086,36 +1157,313 @@ button {
   }
 }
 
+/* ------------------------------------------------------ route instructions -- */
+
+.directions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.directions__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.directions__arrow {
+  color: var(--muted-2);
+  padding: 0 2px;
+}
+
+.directions__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.direction {
+  display: grid;
+  grid-template-columns: 34px 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.direction:last-child {
+  border-bottom: none;
+}
+
+.direction__seq {
+  font-variant-numeric: tabular-nums;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  text-align: right;
+}
+
+.direction__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border: 1px solid #cadcfb;
+}
+
+.direction__text {
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.direction__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.direction__dist {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.direction__mile {
+  color: var(--muted-2);
+}
+
+
+/* ---------------------------------------------------- hos rules + modal -- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 6vh 18px 18px;
+  background: rgba(8, 13, 24, 0.55);
+  backdrop-filter: blur(3px);
+  overflow-y: auto;
+}
+
+.modal__panel {
+  width: min(860px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 22px 24px 24px;
+}
+
+.modal__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal__head h2 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+
+.modal__lead {
+  margin: 10px 0 18px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.rule-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(228px, 1fr));
+  gap: 12px;
+}
+
+.rule {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rule__value {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.rule__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.rule__body {
+  margin: 2px 0 6px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.rule__cite {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted-2);
+}
+
+.btn--icon {
+  padding: 6px 8px;
+}
+
+/* The topbar chips are <span>s except the two that do something. */
+.fact-chip--action {
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+.fact-chip--action:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ------------------------------------------------------------ responsive -- */
+
+/* The two-column layout already collapses at 1180px. These are the narrow-phone
+   fixes: the tab strip scrolls instead of squashing, the turn list stacks, and
+   the 56-column log grid pans horizontally rather than shrinking to mush. */
+@media (max-width: 720px) {
+  .main {
+    padding: 18px 14px 48px;
+  }
+  .topbar__inner {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .brand__text span {
+    display: none;
+  }
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .direction {
+    grid-template-columns: 26px 30px minmax(0, 1fr);
+  }
+  .direction__meta {
+    grid-column: 2 / -1;
+    padding-top: 4px;
+    gap: 10px;
+  }
+  .log-sheet__frame {
+    overflow-x: auto;
+  }
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .split-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Keyboard focus is always visible; mouse clicks stay unringed. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 /* ---------------------------------------------------------------- print -- */
+
+/* A daily log sheet is a wide 24-hour graph grid. Without an explicit landscape
+   page rule the browser prints portrait and clips the late-evening hours off
+   the right edge, so the page geometry has to be stated here. */
+@page {
+  size: letter landscape;
+  margin: 8mm;
+}
 
 @media print {
   .topbar,
   .no-print,
   .tabs,
-  .map-legend {
+  .map-legend,
+  .directions__toolbar {
     display: none !important;
   }
+  html,
   body {
     background: #fff;
   }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   .main,
-  .layout {
+  .layout,
+  .column,
+  .result-grid {
     display: block;
-    padding: 0;
+    width: 100%;
     max-width: none;
+    padding: 0;
+    margin: 0;
+    gap: 0;
   }
   .card,
-  .log-sheet {
+  .log-sheet,
+  .log-sheet__frame {
     box-shadow: none;
     border: none;
+    margin: 0;
     break-inside: avoid;
     page-break-inside: avoid;
   }
-  .log-sheet {
-    page-break-after: always;
-  }
   .logbook {
     gap: 0;
+  }
+  /* Break *before* every sheet after the first. Putting break-after on every
+     sheet instead leaves a trailing blank page at the end of the document. */
+  .log-sheet + .log-sheet {
+    break-before: page;
+    page-break-before: always;
+  }
+  .log-sheet:first-child {
+    break-before: auto;
+    page-break-before: auto;
   }
 }
 

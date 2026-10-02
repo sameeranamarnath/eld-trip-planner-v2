@@ -80,7 +80,11 @@ function SheetHeader({ header }) {
         DRIVER&apos;S DAILY LOG
       </text>
       <text x={PAD + 16} y={52} fontSize="9.5" fill="#7a879c" fontWeight="600" letterSpacing="0.1em">
-        24-HOUR PERIOD · PROPERTY-CARRYING · 70 HOURS / 8 DAYS · ELD-MIRRORED PAPER FORM
+        {`24-HOUR PERIOD STARTING AT ${(
+          header.period_start_time || 'MIDNIGHT'
+        ).toUpperCase()} \u00B7 HOME TERMINAL TIME (${
+          header.home_terminal || 'HOME TERMINAL'
+        }) \u00B7 PROPERTY-CARRYING \u00B7 70 HRS / 8 DAYS`}
       </text>
 
       <rect x={W - PAD - 196} y={22} width="180" height="30" rx="8" fill="#0b1220" />
@@ -118,8 +122,8 @@ function SheetHeader({ header }) {
         x={colX(1)}
         y={100}
         width={fieldWidth}
-        label="Home terminal"
-        value={header.home_terminal}
+        label="Main office address"
+        value={header.main_office_address || header.home_terminal}
       />
       <SheetField
         x={colX(2)}

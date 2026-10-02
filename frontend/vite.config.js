@@ -8,6 +8,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    // Bind IPv4 explicitly. Vite's default `localhost` can resolve to IPv6 only,
+    // which makes http://127.0.0.1:5173 (what verify_contract.py and the README
+    // use) refuse connections for reasons that look nothing like a host issue.
+    host: '127.0.0.1',
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8090',

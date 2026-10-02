@@ -180,6 +180,12 @@ DEFAULT_HEADER = {
     "driver_number": "SCH-4471",
     "co_driver": "N/A",
     "home_terminal": "Green Bay, WI",
+    # 49 CFR 395.8(d)(7) requires the motor carrier's main office address on the
+    # form, and (f)(8) requires the time standard of the home terminal.
+    "main_office_address": "1200 Velp Ave, Green Bay, WI 54303",
+    # (d)(6) the 24-hour period starting time. 395.8(g) draws the specimen grid
+    # midnight to midnight, and so do we.
+    "period_start_time": "midnight",
     "carrier": "Spotter Freight Systems",
     "tractor_number": "T-1042",
     "trailer_number": "TR-5580",

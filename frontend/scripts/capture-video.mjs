@@ -36,6 +36,10 @@ async function main() {
 
   const page = await browser.newPage()
   await page.setViewport(VIEW)
+  // Pin the colour scheme. Headless Edge reports `prefers-color-scheme: dark`, so
+  // without this the "light" shots silently come out dark and every rebuild of
+  // the video looks different.
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }])
 
   let plan = null
   page.on('response', async (response) => {
@@ -186,6 +190,42 @@ async function main() {
     await elementShot('12-sheet-day2', '.log-sheet:nth-of-type(2)')
     await shot('13-sheet-day2-in-context')
   }
+
+  // ---- 3b. route instructions ------------------------------------------
+  await clickByText('Route instructions')
+  await page.waitForSelector('.direction', { timeout: 30000 })
+  await sleep(600)
+  await shot('14-directions-top')
+  await elementShot('15-directions-first-leg', '.directions .card')
+
+  // ---- 3c. the hours-of-service rules dialog ---------------------------
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await sleep(300)
+  await clickByText('HOS')
+  await page.waitForSelector('.modal .rule', { timeout: 10000 })
+  await sleep(600)
+  await shot('16-hos-rules')
+  await page.keyboard.press('Escape')
+  await sleep(350)
+
+  // ---- 3d. the same screens in the dark theme --------------------------
+  const switched = await page.evaluate(() => {
+    const theme = document.documentElement.dataset.theme
+    if (theme === 'dark') return false
+    const button = Array.from(document.querySelectorAll('button')).find((el) =>
+      (el.getAttribute('aria-label') || '').startsWith('Switch to'),
+    )
+    if (!button) return false
+    button.click()
+    return true
+  })
+  console.log(`  dark theme ${switched ? 'toggled' : 'already active'}`)
+  await sleep(600)
+  await shot('17-dark-directions')
+  await clickByText('Daily log sheets')
+  await sleep(1200)
+  await shot('18-dark-logbook')
+  await elementShot('19-dark-sheet-day1', '.log-sheet')
 
   // ---- 4. dump the payload the video needs later -----------------------
   if (plan) {

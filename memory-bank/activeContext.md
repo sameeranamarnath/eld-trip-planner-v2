@@ -1,9 +1,27 @@
 # Active Context — Spotter ELD Trip Planner
 
 ## Objective
-Full-stack Django + React app that takes (current location, pickup, dropoff, current cycle used hrs)
-and outputs (a) route map with stops/rests/fuel, (b) filled-out FMCSA daily ELD log sheets
-(one per 24h day). Hosted live + GitHub repo + screencap subtitle script.
+Make the assessment submission the best in the field, then hand over a recording kit (voiceover
+script with timeline markers + Loom-style reference video) for the user's own Loom recording.
+
+## Where the assessment is won (from the .docx)
+Deliverables: a live hosted version, a 3-5 minute loom covering the app AND the code, GitHub
+code. Grading: "test the hosted version for **accuracy**"; "**UI and UX must be good** ... it can
+compensate for some inaccuracies". Named outputs: **route instructions** + a map with stops and
+rests + drawn daily log sheets.
+
+## Verdict (evidence in specs/submission-ranking/)
+**Not yet the best: 7.90/10, 3rd of 5** on the weighted rubric. Two concrete reasons:
+1. No **route instructions** - `routing.py` sends OSRM `"steps": "false"` and discards maneuvers.
+2. Deliverables incomplete - not pushed, not deployed (15% of the rubric on the floor).
+Plus the log sheet is **9/11 on 49 CFR 395.8(d)** (missing 24-hour period starting time and main
+office address), there is no print/PDF export, and no lint script.
+
+## Agreed scope (user-approved)
+T1-T8 in `specs/submission-ranking/tasks.md` PLUS differentiating polish: dark mode, mobile
+layout, accessibility pass, and an HOS explainer panel. Recording kit (T8) comes LAST because it
+narrates the frozen feature set.
+
 
 ## Scope boundary
 ALL work happens inside `c:\projects\assessments\spotter2` only. Do not touch `..\spotter`.
@@ -61,10 +79,27 @@ git init) and then deployment. See "Next steps" at the bottom.
   concat entry inherits the previous duration and adds a whole extra shot (249s not 240s).
 - Parsing `ffprobe -of default=noprint_wrappers=1` into one flat dict - the subtitle stream's
   `width=N/A` silently overwrites the video's. Query each stream with `-select_streams`.
+- `playwright-parallel` browser sessions - the MCP writes its output dir into
+  `C:\Program Files\Microsoft VS Code\.playwright-mcp\` which is not writable (EPERM). Use
+  `puppeteer-core` + Edge (the proven `capture-video.mjs` pattern) for any headless capture.
+- Fetching eCFR.gov - it serves a CAPTCHA bot wall. Use law.cornell.edu for CFR text.
 
 ## Next steps
-1. Add `.gitignore` (node_modules, __pycache__, venv, docs/video/build, *.log).
-2. Write repo `README.md` (what it does, how to run, how to rebuild the video, deploy notes).
-3. `git init` + commit + create/push the repo with `gh` (account `amar-cbre`).
-4. Deploy guidance: Django to Render/Docker, Vite frontend to Vercel (no CLI/token on disk).
-5. Sanity-check the app entrypoint imports cleanly before deploying.
+1. **T7 only** - push the repo and deploy. Blocked on: which remote (public
+   `spotter2-eld-trip-planner`, private same name, public `spotter-eld-trip-planner`, or
+   local-only) and on credentials (no Vercel/Docker token on disk; `gh` is authed as
+   `amar-cbre`).
+2. The user records their own Loom against `docs/recording/voiceover-script.md` and
+   `docs/video/spotter2-loom-reference.mp4`.
+
+## Everything else is done and verified
+- T1-T6, T9-T12, T8 complete. `specs/submission-ranking/tasks.md` has the checklist and a
+  table of the seven bugs found by testing rather than reasoning.
+
+## Headline find (worth remembering)
+The autocomplete offered **state codes for city queries** - typing "Nashville" returned
+`TN`, `GA`, `IN`, `AR` and no Nashville. Picking one geocoded to the middle of Tennessee, so
+the most natural user input produced a nonsense route. Root cause: Photon leaves `city`
+empty when the match *is* the city, so the label degraded to the bare state. Fixed with
+`_PLACE_RANK` + recovering the name from `props["name"]`, plus 7 regression tests in
+`backend/eld/tests/test_geocoding.py`.

@@ -49,6 +49,26 @@ CA_PROVINCES = {
 
 _ADMIN_CODES = {**US_STATES, **CA_PROVINCES}
 
+# Photon reports what kind of thing it matched in `osm_value`. A truck planner
+# wants populated places, so these weights drive the suggestion order: without
+# them a bare query like "Nashville" can come back as state-level areas.
+_PLACE_RANK = {
+    "city": 100,
+    "town": 90,
+    "village": 80,
+    "hamlet": 70,
+    "borough": 65,
+    "suburb": 55,
+    "quarter": 50,
+    "neighbourhood": 45,
+    "locality": 40,
+    "county": 20,
+    "state": 10,
+    "country": 5,
+}
+# Anything at or above this is a place a truck can actually be dispatched to.
+_POPULATED_RANK = _PLACE_RANK["locality"]
+
 # OSM occasionally stores a sub-county administrative unit where Photon expects
 # a city ("North Bluff Precinct", "Boone Township").  Those read badly on a log
 # sheet, so fall back to the county for such points.
@@ -73,6 +93,8 @@ class Place:
     # True when ``city`` had to be inferred from a county/precinct rather than a
     # real populated place - the caller then tries a more precise provider.
     weak: bool = False
+    # Relevance weight from `_PLACE_RANK`; higher is a better trip endpoint.
+    rank: int = 0
     raw: dict = field(default_factory=dict)
 
     @property
@@ -129,6 +151,29 @@ def split_city_state(text: str) -> tuple[str, str]:
     return match.group("city").strip(), _norm_state(match.group("region"))
 
 
+def _rank_places(places: list[Place], query: str) -> list[Place]:
+    """Best-first ordering for suggestions and for picking a single geocode.
+
+    Populated places beat counties and states; a query that already carries its
+    own state rewards a result in that state; an exact name match always wins.
+    """
+    wanted_city, wanted_state = split_city_state(query)
+    needle = (wanted_city or query).strip().lower()
+
+    def score(place: Place) -> tuple[int, int, int, int]:
+        name = (place.city or place.label.split(",")[0]).strip().lower()
+        exact = 1 if name == needle else 0
+        same_state = 1 if wanted_state and place.state == wanted_state else 0
+        populated = 1 if place.city else 0
+        return (exact, same_state, populated, place.rank)
+
+    ordered = sorted(places, key=score, reverse=True)
+    # Once a real populated place is on offer, drop the administrative leftovers
+    # that would otherwise geocode to the middle of a state.
+    populated_only = [place for place in ordered if place.city]
+    return populated_only or ordered
+
+
 class Geocoder:
     """Cached facade over the configured geocoding providers."""
 
@@ -170,13 +215,17 @@ class Geocoder:
         if len(cleaned) < 2:
             return []
         try:
-            results = self._query_photon(cleaned, limit)
-            if results:
-                return results
+            # Over-fetch then rank: the provider's own ordering is not tuned for
+            # "places a truck can actually be dispatched to".
+            results = self._query_photon(cleaned, max(limit * 4, 12))
+            ranked = _rank_places(results, cleaned)[:limit]
+            if ranked:
+                return ranked
         except Exception:  # pragma: no cover - autocomplete must stay non-fatal
             logger.warning("Photon suggestion lookup failed", exc_info=True)
         try:
-            return self._suggest_nominatim(cleaned, limit)
+            found = self._suggest_nominatim(cleaned, max(limit * 2, 8))
+            return _rank_places(found, cleaned)[:limit]
         except Exception:  # pragma: no cover
             logger.warning("Nominatim suggestion lookup failed", exc_info=True)
             return []
@@ -202,8 +251,8 @@ class Geocoder:
         return self._from_nominatim(payload[0])
 
     def _geocode_photon(self, query: str) -> Place | None:
-        results = self._query_photon(query, limit=1)
-        return results[0] if results else None
+        ranked = _rank_places(self._query_photon(query, limit=8), query)
+        return ranked[0] if ranked else None
 
     def _suggest_nominatim(self, query: str, limit: int) -> list[Place]:
         payload = get_json(
@@ -351,6 +400,11 @@ class Geocoder:
                 return None
             lng, lat = float(coords[0]), float(coords[1])
 
+        name = (props.get("name") or "").strip()
+        osm_key = (props.get("osm_key") or "").lower()
+        osm_value = (props.get("osm_value") or "").lower()
+        rank = _PLACE_RANK.get(osm_value, 30)
+
         city = (
             props.get("city")
             or props.get("town")
@@ -365,11 +419,21 @@ class Geocoder:
                 county = f"{county} County" if "count" not in county.lower() else county
             city = "" if _PLACEHOLDER_CITY_RE.search(county) else county
             weak = bool(city)
+
+        # Photon leaves `city` empty when the match *is* the city, so the place name
+        # only survives in `name`. Without this, a suggestion for "Nashville"
+        # degrades to the bare state code "TN" and picking it geocodes to the middle
+        # of Tennessee.
+        if not city and name and not _PLACEHOLDER_CITY_RE.search(name):
+            if osm_key == "place" and rank >= _POPULATED_RANK:
+                city = name
+                weak = False
+
         state = _norm_state(props.get("state") or props.get("state_code") or "")
         if (props.get("countrycode") or "").lower() not in {"us", "ca"}:
             return None
 
-        label = ", ".join(p for p in (city, state) if p) or props.get("name") or ""
+        label = ", ".join(p for p in (city, state) if p) or name
         return Place(
             label=label,
             lat=float(lat),
@@ -379,6 +443,7 @@ class Geocoder:
             country=props.get("country") or "",
             source="photon",
             weak=weak,
+            rank=rank,
             raw=props,
         )
 

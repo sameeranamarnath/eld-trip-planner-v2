@@ -31,6 +31,7 @@ export const DEFAULT_HEADER = {
   driver_number: 'SCH-4471',
   carrier: 'Spotter Freight Systems',
   home_terminal: 'Green Bay, WI',
+  main_office_address: '1200 Velp Ave, Green Bay, WI 54303',
   tractor_number: 'T-1042',
   trailer_number: 'TR-5580',
   shipper: "Don's Paper Company",
@@ -198,6 +199,12 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
                 label="Home terminal"
                 value={value.header.home_terminal}
                 onChange={(text) => setHeader({ home_terminal: text })}
+              />
+              <HeaderInput
+                id="main_office_address"
+                label="Main office address"
+                value={value.header.main_office_address}
+                onChange={(text) => setHeader({ main_office_address: text })}
               />
               <HeaderInput
                 id="shipper"

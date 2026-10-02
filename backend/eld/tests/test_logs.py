@@ -134,6 +134,50 @@ class MultiDayLogTests(SimpleTestCase):
             ):
                 self.assertTrue(day.header.get(key), f"missing header field {key}")
 
+    def test_sheet_carries_the_49_cfr_395_8_d_elements(self):
+        """49 CFR 395.8(d) lists what the form must show in addition to the grid.
+
+        Every element a driver hand-writes onto the paper form has to exist in
+        the payload the SVG sheet is drawn from, otherwise the drawn form is
+        incomplete no matter how good the grid looks.
+        """
+        for day in self.days:
+            payload = day.to_dict()
+            header = payload["header"]
+            # (d)(1) date, (d)(2) total miles driving today, (d)(3) tractor and
+            # trailer number, (d)(4) carrier, (d)(7) main office address,
+            # (d)(9) co-driver, (d)(10) total hours, (d)(11) shipping document
+            # number / shipper and commodity.
+            for key in (
+                "date",
+                "day_label",
+                "carrier",
+                "main_office_address",
+                "co_driver",
+                "tractor_number",
+                "trailer_number",
+                "shipper",
+                "commodity",
+                "load_id",
+            ):
+                self.assertTrue(header.get(key), f"395.8(d) field {key} is empty")
+            self.assertGreater(payload["miles_driving"], 0)  # (d)(2)
+            self.assertGreater(len(payload["remarks"]), 0)  # (d)(8)
+            # (d)(10) total hours, far right edge of the grid.
+            self.assertEqual(payload["total_hours_hhmm"], "24:00")
+
+    def test_main_office_address_can_be_overridden(self):
+        """(d)(7) is carrier data, so it must come from the request when given."""
+        days = LogBookBuilder(
+            HosSimulator(make_route(600.0), DEFAULT_START).simulate().segments,
+            header={"main_office_address": "500 Dock St, Memphis, TN 38103"},
+        ).build()
+        self.assertEqual(
+            days[0].header["main_office_address"], "500 Dock St, Memphis, TN 38103"
+        )
+        # The 24-hour period start is fixed at midnight (395.8(g)).
+        self.assertEqual(days[0].header["period_start_time"], "midnight")
+
     def test_sleeper_berth_is_logged_for_overnight_rest(self):
         kinds = {entry.kind for day in self.days for entry in day.entries}
         self.assertIn("reset_sleeper", kinds)

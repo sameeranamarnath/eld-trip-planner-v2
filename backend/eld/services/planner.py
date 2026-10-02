@@ -17,7 +17,7 @@ from eld.services.hos import (
     Segment,
 )
 from eld.services.logs import LogBookBuilder
-from eld.services.routing import get_router, haversine_miles
+from eld.services.routing import RoutePath, get_router, haversine_miles
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +107,7 @@ class TripPlanner:
                 for index, leg in enumerate(path.legs)
             ],
             "provider": path.provider,
+            "step_count": len(path.steps),
         }
 
         return {
@@ -123,10 +124,40 @@ class TripPlanner:
                 "dropoff": dropoff.to_dict(),
             },
             "route": route,
+            "directions": self._build_directions(path),
             "stops": stops,
             "segments": [segment.to_dict() for segment in simulation.segments],
             "logs": [day.to_dict() for day in day_logs],
             "summary": self._summary(simulation, day_logs, path),
+        }
+
+    # -- route instructions ------------------------------------------------
+    @staticmethod
+    def _build_directions(path: RoutePath) -> dict[str, Any]:
+        """Group the turn-by-turn maneuvers by leg, with per-leg totals.
+
+        The brief names "route instructions" as an output in its own right, so
+        this is exposed flat (``steps``) for a list view and grouped by leg for
+        a leg-by-leg view.
+        """
+        legs: list[dict[str, Any]] = []
+        for index, leg in enumerate(path.legs):
+            leg_steps = [step for step in path.steps if step.leg_index == index]
+            legs.append(
+                {
+                    "index": index,
+                    "from": leg.label_from,
+                    "to": leg.label_to,
+                    "distance_miles": round(leg.distance_miles, 1),
+                    "duration_hours": round(leg.duration_hours, 2),
+                    "step_count": len(leg_steps),
+                    "steps": [step.to_dict() for step in leg_steps],
+                }
+            )
+        return {
+            "step_count": len(path.steps),
+            "steps": [step.to_dict() for step in path.steps],
+            "legs": legs,
         }
 
     # -- labelling ---------------------------------------------------------

@@ -1,0 +1,125 @@
+1
+00:00:00,000 --> 00:00:09,000
+Hi, I'm Amar. This is Spotter ELD - a Django and React app that takes four
+trip inputs and returns a legal route plus a filled-out FMCSA daily log for
+every day of the trip.
+
+2
+00:00:09,000 --> 00:00:22,000
+The four inputs are exactly what the brief asks for: current location, pickup,
+drop-off, and hours already used in the seventy-hour, eight-day cycle.
+
+3
+00:00:22,000 --> 00:00:33,000
+Locations autocomplete from OpenStreetMap, so you are choosing a real
+dispatchable city. I rank city and town results above counties and states,
+because the middle of Tennessee is not a place a truck can be sent to.
+
+4
+00:00:33,000 --> 00:00:43,000
+Optional departure time, and the driver and carrier fields - driver number,
+tractor and trailer, shipper, commodity - so the drawn sheet matches the form
+it replaces.
+
+5
+00:00:43,000 --> 00:00:50,000
+Planning here is pure computation with no database, which is why the backend
+deploys anywhere as a stateless function.
+
+6
+00:00:50,000 --> 00:01:05,000
+Six hundred and seventy-two miles, two log sheets, one ten-hour reset. The
+summary tiles are the whole plan at a glance: driving hours, cycle hours used,
+fuel stops, breaks and rests.
+
+7
+00:01:05,000 --> 00:01:17,000
+The route comes from OSRM over OpenStreetMap tiles - both free and keyless.
+Every stop, rest and fuel stop is placed on the route itself, not offset next
+to it.
+
+8
+00:01:17,000 --> 00:01:29,000
+Each stop is a real duty-status change with an arrival time, a duration and a
+mile marker, and it is the same data the log grid is drawn from. One source of
+truth.
+
+9
+00:01:29,000 --> 00:01:46,000
+Route instructions are their own output in the brief, so they are their own
+tab: fifty-seven turn-by-turn steps with maneuvers, distances, durations and
+running mileage. OSRM returns machine-readable maneuver codes, so the backend
+writes the sentences.
+
+10
+00:01:46,000 --> 00:02:01,000
+Now the part that matters. Four duty-status lines on a fifteen-minute grid,
+brackets where the truck sat still, a numbered remark flag at every status
+change with the city and state, per-line totals, and the seventy-hour recap.
+
+11
+00:02:01,000 --> 00:02:13,000
+Longer trips just add sheets. Day two totals twenty-four hours again, and
+carries the recap forward so the cycle maths never gets lost between pages.
+
+12
+00:02:13,000 --> 00:02:22,000
+Every sheet prints or saves as a PDF at one clean landscape page per day -
+real vector text, not a screenshot of a table.
+
+13
+00:02:22,000 --> 00:02:31,000
+The rules dialog lists every limit the planner enforces with the paragraph
+each one comes from: the eleven-hour limit, the fourteen-hour window, the
+thirty-minute break, the seventy-hour cycle.
+
+14
+00:02:31,000 --> 00:02:38,000
+And a dark theme. The log sheet deliberately stays white in both, because it
+is paper.
+
+15
+00:02:38,000 --> 00:02:52,000
+Now the code. The HOS engine is deliberately pure: give it a route and a start
+time and it returns duty segments. Every tunable rule lives in one dataclass
+at the top of the file, so the regulation can be read against it line by line.
+
+16
+00:02:52,000 --> 00:03:05,000
+A separate builder slices that stream into one sheet per calendar day. Keeping
+it separate means the grid arithmetic - totals, remark flags, the seventy-hour
+recap - is unit-testable without ever opening a browser.
+
+17
+00:03:05,000 --> 00:03:16,000
+The router turns OSRM's machine-readable maneuver codes into plain-language
+instructions, and rescales the polyline so the mile markers agree with the
+provider's own distance.
+
+18
+00:03:16,000 --> 00:03:28,000
+The sheet itself is SVG generated in React, which is why it prints crisply,
+and why the grid, the brackets and the numbered remark flags are all real
+vector output rather than an image.
+
+19
+00:03:28,000 --> 00:03:40,000
+Fifty-two offline tests cover the HOS arithmetic and the geocoding ranking. On
+top of that a contract script replays a 672-mile trip and asserts 633 fields
+against the running stack.
+
+20
+00:03:40,000 --> 00:03:49,000
+There are no API keys anywhere - OSRM, Nominatim and Photon all run keyless,
+so a fresh clone works on the first try.
+
+21
+00:03:49,000 --> 00:03:59,000
+So the app plans a legal trip, draws the logs, and hands them to a driver as a
+PDF that looks like the form it replaces.
+
+22
+00:03:59,000 --> 00:04:10,000
+The repository and the live link are in the description below. Thanks for
+watching.
+

@@ -179,8 +179,6 @@ export default function RouteMap({ plan, activePin, onActivate }) {
     }
   }, [])
 
-  const route = plan?.route
-
   return (
     <div className="map-shell">
       <div className="map-canvas" ref={containerRef} />
