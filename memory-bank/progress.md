@@ -81,3 +81,4 @@
 
 [blocked] new-full-stack-dev-assessment.docx could not be renamed into docs/reference/. It is open in another process with write access but no FILE_SHARE_DELETE (the Office/OneDrive signature): read+write sharing is allowed, delete/rename is denied, so git mv fails with 'Permission denied' on every attempt (~12 tries over several minutes). Nothing was killed to force it - the user's Word session was live and may hold unsaved work. Finish it with: git mv new-full-stack-dev-assessment.docx docs/reference/assessment-brief.docx
 
+[fixed] Brief rename retried once the holding process closed, and it went through: new-full-stack-dev-assessment.docx -> docs/reference/assessment-brief.docx. The repo root is now only README.md, Dockerfile, render.yaml and .gitignore.
