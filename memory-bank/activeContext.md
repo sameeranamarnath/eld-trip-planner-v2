@@ -56,6 +56,12 @@ locally verified build) and the API is healthy at `https://spotter2-eld-api-rose
   **commit-author email recorded in the deployment metadata** against the member list. Commits
   authored as `85400557+sameeranamarnath@users.noreply.github.com` are blocked regardless of who
   owns the project or clicks deploy. The fix is the repo-local `git config user.email`.
+- **Fix that identity at EVERY level, not just the repo.** The global config held the noreply
+  address while the repo-local override masked it - so any other repo, or this one after a lost
+  local config, would deploy BLOCKED again. Both global and local are now the member address.
+- **`vercel deploy --prod --no-wait` is the deploy form to use here.** It returns in seconds and
+  the platform still promotes the build to production when it succeeds (confirmed on both
+  projects via `vercel alias ls`), so it fits inside a 30s command timeout.
 - **There is NO Vercel git integration on `spotter2-eld-web`: pushing does not deploy.** A `git
   push` creates no deployment at all - the CLI is the only path, which is convenient now that
   GitHub Actions is unavailable. CLI deploys are subject to the same commit-author check.
