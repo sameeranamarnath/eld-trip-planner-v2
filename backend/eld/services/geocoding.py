@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import logging
 import re
+import threading
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any
@@ -117,21 +118,30 @@ class Place:
 
 
 class _LruCache:
+    """Least-recently-used store for geocoder results.
+
+    Guarded by a lock because the planner reverse-geocodes from a worker pool
+    and an ``OrderedDict`` is not safe to mutate from several threads.
+    """
+
     def __init__(self, maxsize: int) -> None:
         self._maxsize = max(1, maxsize)
         self._store: OrderedDict[str, Any] = OrderedDict()
+        self._lock = threading.Lock()
 
     def get(self, key: str):
-        if key in self._store:
-            self._store.move_to_end(key)
-            return self._store[key]
-        return None
+        with self._lock:
+            if key in self._store:
+                self._store.move_to_end(key)
+                return self._store[key]
+            return None
 
     def set(self, key: str, value) -> None:
-        self._store[key] = value
-        self._store.move_to_end(key)
-        while len(self._store) > self._maxsize:
-            self._store.popitem(last=False)
+        with self._lock:
+            self._store[key] = value
+            self._store.move_to_end(key)
+            while len(self._store) > self._maxsize:
+                self._store.popitem(last=False)
 
 
 def _norm_state(value: str) -> str:

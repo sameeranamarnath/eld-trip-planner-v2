@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Icon from './Icon.jsx'
 import LocationField from './LocationField.jsx'
 
-export const EXAMPLE_TRIPS = [
+const EXAMPLE_TRIPS = [
   {
     label: 'Green Bay → Chicago → Nashville',
     current: 'Green Bay, WI',
@@ -25,19 +25,6 @@ export const EXAMPLE_TRIPS = [
     cycle: 62,
   },
 ]
-
-export const DEFAULT_HEADER = {
-  driver_name: 'J. Driver',
-  driver_number: 'SCH-4471',
-  carrier: 'Spotter Freight Systems',
-  home_terminal: 'Green Bay, WI',
-  main_office_address: '1200 Velp Ave, Green Bay, WI 54303',
-  tractor_number: 'T-1042',
-  trailer_number: 'TR-5580',
-  shipper: "Don's Paper Company",
-  commodity: 'Paper products',
-  load_id: 'LD-88231',
-}
 
 /** Examples always start at 06:30 today so the generated logs are comparable. */
 function morningDeparture() {

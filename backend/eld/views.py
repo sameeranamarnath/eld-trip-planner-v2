@@ -16,6 +16,19 @@ from eld.services.planner import TripPlanRequest, plan_trip
 
 logger = logging.getLogger(__name__)
 
+# Autocomplete sizing. The UI shows six rows; past ten the list stops being useful.
+PLACES_DEFAULT_LIMIT = 6
+PLACES_MAX_LIMIT = 10
+
+
+def _requested_limit(raw: str | None) -> int:
+    """Clamp the ``?limit=`` query parameter to a usable autocomplete size."""
+    try:
+        wanted = int(raw) if raw not in (None, "") else PLACES_DEFAULT_LIMIT
+    except (TypeError, ValueError):
+        wanted = PLACES_DEFAULT_LIMIT
+    return max(1, min(wanted, PLACES_MAX_LIMIT))
+
 
 class HealthView(APIView):
     """Cheap liveness probe that also reports the active providers."""
@@ -36,7 +49,7 @@ class HealthView(APIView):
                     "on_duty_window_hours": DEFAULT_RULES.max_window_hours,
                     "break_after_driving_hours": DEFAULT_RULES.break_after_drive_hours,
                     "reset_hours": DEFAULT_RULES.reset_off_hours,
-                    "cycle": "70 hours / 8 days",
+                    "cycle": DEFAULT_RULES.cycle_label,
                     "fuel_interval_miles": DEFAULT_RULES.fuel_interval_miles,
                 },
                 "endpoints": {
@@ -53,11 +66,7 @@ class PlaceSearchView(APIView):
 
     def get(self, request):
         query = (request.query_params.get("q") or "").strip()
-        try:
-            limit = int(request.query_params.get("limit") or 6)
-        except (TypeError, ValueError):
-            limit = 6
-        limit = max(1, min(limit, 10))
+        limit = _requested_limit(request.query_params.get("limit"))
 
         results = get_geocoder().suggest(query, limit) if query else []
         return Response({"query": query, "results": [place.to_dict() for place in results]})
@@ -69,17 +78,6 @@ class PlanTripView(APIView):
     def post(self, request):
         serializer = TripPlanRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
 
-        plan = plan_trip(
-            TripPlanRequest(
-                current_location=data["current_location"],
-                pickup_location=data["pickup_location"],
-                dropoff_location=data["dropoff_location"],
-                cycle_used_hours=float(data.get("cycle_used_hours") or 0.0),
-                departure_time=data.get("departure_time"),
-                header=data.get("header") or {},
-                start_odometer=float(data.get("start_odometer") or 0.0),
-            )
-        )
+        plan = plan_trip(TripPlanRequest.from_validated(serializer.validated_data))
         return Response(plan, status=status.HTTP_200_OK)

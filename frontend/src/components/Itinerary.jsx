@@ -1,5 +1,5 @@
 import Icon from './Icon.jsx'
-import { buildMarkers } from './RouteMap.jsx'
+import { buildMarkers } from '../markers.js'
 import { formatDateLong, formatMinutesShort } from '../format.js'
 
 const ICON_FOR_TYPE = {

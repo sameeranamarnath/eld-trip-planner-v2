@@ -25,6 +25,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Tooling caches
+.serena/
+
 # Build artifacts
 *.log
 docs/video/build/

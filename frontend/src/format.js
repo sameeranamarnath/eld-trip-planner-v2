@@ -20,13 +20,6 @@ export function minutesToClock(minutes) {
   return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
 }
 
-/** `13.5` -> `"13h 30m"` */
-export function hoursToWords(hours) {
-  if (hours == null || Number.isNaN(hours)) return '—'
-  const total = Math.round(hours * 60)
-  return `${Math.floor(total / 60)}h ${String(total % 60).padStart(2, '0')}m`
-}
-
 /** `"2026-10-01T06:30:00"` -> `"Thu, Oct 01 · 06:30"` */
 export function formatDateTime(iso) {
   if (!iso) return '—'
@@ -84,10 +77,4 @@ export function formatMinutesShort(minutes) {
   const hours = Math.floor(rounded / 60)
   const rest = rounded % 60
   return rest ? `${hours}h ${rest}m` : `${hours}h`
-}
-
-export function titleCase(value) {
-  return String(value || '')
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
 }

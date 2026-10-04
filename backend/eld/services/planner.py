@@ -50,6 +50,24 @@ class TripPlanRequest:
     start_odometer: float = 0.0
     rules: HosRules = field(default_factory=HosRules)
 
+    @classmethod
+    def from_validated(cls, data: dict[str, Any]) -> TripPlanRequest:
+        """Build a request from ``TripPlanRequestSerializer.validated_data``.
+
+        The serializer already owns the defaults and the range checks, so the
+        only work left here is coercing the optional numbers and replacing a
+        missing header with an empty one.
+        """
+        return cls(
+            current_location=data["current_location"],
+            pickup_location=data["pickup_location"],
+            dropoff_location=data["dropoff_location"],
+            cycle_used_hours=float(data.get("cycle_used_hours") or 0.0),
+            departure_time=data.get("departure_time"),
+            header=dict(data.get("header") or {}),
+            start_odometer=float(data.get("start_odometer") or 0.0),
+        )
+
 
 class TripPlanner:
     """Coordinates the geocoder, the router, the HOS engine and the log builder."""
@@ -62,9 +80,7 @@ class TripPlanner:
     # -- public ------------------------------------------------------------
     def plan(self) -> dict[str, Any]:
         request = self.request
-        origin = self.geocoder.geocode(request.current_location)
-        pickup = self.geocoder.geocode(request.pickup_location)
-        dropoff = self.geocoder.geocode(request.dropoff_location)
+        origin, pickup, dropoff = self._geocode_anchors()
 
         anchors: list[tuple[Place, str]] = [
             (origin, origin.short_label),
@@ -130,6 +146,24 @@ class TripPlanner:
             "logs": [day.to_dict() for day in day_logs],
             "summary": self._summary(simulation, day_logs, path),
         }
+
+    # -- geocoding ---------------------------------------------------------
+    def _geocode_anchors(self) -> tuple[Place, Place, Place]:
+        """Resolve current / pickup / drop-off into ``Place`` records.
+
+        The three lookups are independent network round-trips (~0.8 s each on a
+        cold cache, measured), so they run concurrently: the request waits for
+        the slowest look-up rather than for the sum of all three. A location
+        that cannot be found still raises :class:`PlaceNotFoundError` naming
+        itself, because ``pool.map`` yields strictly in argument order.
+        """
+        queries = (
+            self.request.current_location,
+            self.request.pickup_location,
+            self.request.dropoff_location,
+        )
+        with ThreadPoolExecutor(max_workers=len(queries)) as pool:
+            return tuple(pool.map(self.geocoder.geocode, queries))
 
     # -- route instructions ------------------------------------------------
     @staticmethod
@@ -302,7 +336,8 @@ class TripPlanner:
         arrival = simulation.end_time
         wall_hours = (arrival - simulation.start_time).total_seconds() / 3600.0
         on_duty_in_plan = sum(day.on_duty_hours for day in day_logs)
-        cycle_after = min(70.0, request.cycle_used_hours + on_duty_in_plan)
+        cycle_limit = request.rules.cycle_limit_hours
+        cycle_after = min(cycle_limit, request.cycle_used_hours + on_duty_in_plan)
         return {
             "total_miles": round(path.total_miles, 1),
             "driving_hours": round(path.total_hours, 2),
@@ -318,13 +353,13 @@ class TripPlanner:
             "restarts": counters.get("restarts", 0),
             "cycle_used_hours": request.cycle_used_hours,
             "cycle_hours_after_trip": round(cycle_after, 2),
-            "cycle_hours_remaining": round(max(0.0, 70.0 - cycle_after), 2),
+            "cycle_hours_remaining": round(max(0.0, cycle_limit - cycle_after), 2),
             "rules": {
                 "max_drive_hours": request.rules.max_drive_hours,
                 "max_window_hours": request.rules.max_window_hours,
                 "break_after_drive_hours": request.rules.break_after_drive_hours,
                 "reset_off_hours": request.rules.reset_off_hours,
-                "cycle": "70 hours / 8 days",
+                "cycle": request.rules.cycle_label,
                 "fuel_interval_miles": request.rules.fuel_interval_miles,
                 "pickup_minutes": request.rules.pickup_minutes,
                 "dropoff_minutes": request.rules.dropoff_minutes,
@@ -342,9 +377,10 @@ def _default_departure() -> datetime:
 
 
 def plan_trip(request: TripPlanRequest) -> dict[str, Any]:
-    if request.cycle_used_hours < 0 or request.cycle_used_hours > 70:
+    limit = request.rules.cycle_limit_hours
+    if request.cycle_used_hours < 0 or request.cycle_used_hours > limit:
         raise ValidationError(
-            "Current cycle used must be between 0 and 70 hours.",
+            f"Current cycle used must be between 0 and {limit:.0f} hours.",
             details={"cycle_used_hours": request.cycle_used_hours},
         )
     return TripPlanner(request).plan()

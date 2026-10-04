@@ -27,8 +27,26 @@ narrates the frozen feature set.
 ALL work happens inside `c:\projects\assessments\spotter2` only. Do not touch `..\spotter`.
 
 ## Current focus
-The walkthrough video is BUILT and verified. Next up: repo hygiene (README, .gitignore,
-git init) and then deployment. See "Next steps" at the bottom.
+T7 DEPLOYED AND LIVE. Backend `https://spotter2-eld-api-rose.vercel.app` (health 200, plan 200
+in 6s), frontend `https://spotter2-eld-web.vercel.app` (200, bundle carries the API URL).
+Now: refactor + optimise pass (T13), driven by the test suites.
+
+## T13 refactor programme (verify after every step)
+Baseline: `backend/eld` 52/52 OK (`manage.py test eld`), `verify_contract.py` 633 checks.
+Backend:
+1. `geocoding._LruCache` - add a `threading.Lock`; it is already shared by the reverse-geocode
+   worker pool and OrderedDict mutation is not thread-safe.
+2. `planner.plan()` - geocode current/pickup/dropoff in PARALLEL with the ThreadPoolExecutor
+   idiom already used in `_label_segments` (saves ~2 serial round-trips; live call is 6s).
+3. `planner._summary` + `plan_trip` - replace the literal `70.0`/`"70 hours / 8 days"` with
+   `request.rules.cycle_limit_hours` / `cycle_days` (the field already exists on HosRules).
+4. `serializers.MAX_CYCLE_HOURS` - derive from `DEFAULT_RULES.cycle_limit_hours`.
+5. `views.py` - health `cycle` label from the rules; add `TripPlanRequest.from_validated()`
+   to kill the field-by-field mapping; name the places-search limit constants.
+Frontend:
+6. `format.js` - de-duplicate the minutes/clock helpers.
+7. `App.jsx` - extract the theme persistence into a `useTheme` hook.
+Then: redeploy both projects and re-verify live end to end.
 
 ## Verified facts
 - Python 3.11.9 (venv `spotter2` at repo root), Node v24.16.0, npm 11.13.0, git 2.53.0.

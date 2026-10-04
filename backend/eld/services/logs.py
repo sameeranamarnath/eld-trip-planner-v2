@@ -17,6 +17,7 @@ from datetime import datetime, time, timedelta
 from typing import Any
 
 from eld.services.hos import (
+    DEFAULT_RULES,
     DRIVING,
     LINE_FOR_STATUS,
     OFF_DUTY,
@@ -392,7 +393,7 @@ class LogBookBuilder:
 
     def _apply_recap(self, days: list[DayLog]) -> None:
         """70-hour / 8-day recap - the box at the bottom right of the paper form."""
-        limit = 70.0
+        limit = DEFAULT_RULES.cycle_limit_hours
         # ``history`` holds prior days.  Index 0 aggregates everything already
         # burned before this trip, which is all a scalar input can tell us.
         history: list[float] = [max(0.0, self.cycle_used_hours)]
@@ -402,7 +403,7 @@ class LogBookBuilder:
             total = previous_seven + today
             available = max(0.0, limit - total)
             day.recap = {
-                "cycle": "70-hour / 8-day",
+                "cycle": f"{limit:.0f}-hour / {DEFAULT_RULES.cycle_days}-day",
                 "cycle_limit_hours": limit,
                 "hours_on_duty_today": round(today, 2),
                 "hours_on_duty_today_hhmm": hours_to_hhmm(today),

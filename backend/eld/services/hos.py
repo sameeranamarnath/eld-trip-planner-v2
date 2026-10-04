@@ -74,6 +74,11 @@ class HosRules:
     def reset_sleeper_minutes(self) -> int:
         return int(round(self.reset_off_hours * 60)) - self.reset_off_duty_minutes
 
+    @property
+    def cycle_label(self) -> str:
+        """``"70 hours / 8 days"`` - the cycle rule in the form the UI shows it."""
+        return f"{self.cycle_limit_hours:.0f} hours / {self.cycle_days} days"
+
 
 DEFAULT_RULES = HosRules()
 
@@ -148,13 +153,14 @@ class HosSimulator:
         cycle_used_hours: float = 0.0,
         rules: HosRules | None = None,
     ) -> None:
-        if cycle_used_hours < 0 or cycle_used_hours > 70:
+        self.rules = rules or DEFAULT_RULES
+        limit = self.rules.cycle_limit_hours
+        if cycle_used_hours < 0 or cycle_used_hours > limit:
             raise ValidationError(
-                "Current cycle used must be between 0 and 70 hours.",
+                f"Current cycle used must be between 0 and {limit:.0f} hours.",
                 details={"cycle_used_hours": cycle_used_hours},
             )
         self.path = path
-        self.rules = rules or DEFAULT_RULES
         self.t = start
         self.start_time = start
         self.segments: list[Segment] = []

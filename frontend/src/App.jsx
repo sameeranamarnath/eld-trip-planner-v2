@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Icon from './components/Icon.jsx'
-import TripForm, { DEFAULT_HEADER } from './components/TripForm.jsx'
+import TripForm from './components/TripForm.jsx'
 import RouteMap from './components/RouteMap.jsx'
 import Itinerary from './components/Itinerary.jsx'
 import SummaryPanel from './components/SummaryPanel.jsx'
@@ -9,11 +9,22 @@ import Directions from './components/Directions.jsx'
 import HosRulesPanel from './components/HosRulesPanel.jsx'
 import { fetchHealth, planTrip } from './api.js'
 import { toDateTimeInputValue } from './format.js'
+import { DEFAULT_HEADER } from './logHeader.js'
+import { useTheme } from './useTheme.js'
 
 const TABS = [
   { id: 'route', label: 'Route & stops', icon: 'route' },
   { id: 'directions', label: 'Route instructions', icon: 'list' },
   { id: 'logs', label: 'Daily log sheets', icon: 'file' },
+]
+
+// The headline limits, shown as chips in the header.
+const HOS_FACTS = [
+  ['70', 'hours / 8 days'],
+  ['11', 'h driving limit'],
+  ['14', 'h on-duty window'],
+  ['30', 'min break after 8 h'],
+  ['1,000', 'mi between fuel stops'],
 ]
 
 /**
@@ -50,20 +61,8 @@ export default function App() {
   const [activePin, setActivePin] = useState(null)
   const [health, setHealth] = useState(null)
   const [rulesOpen, setRulesOpen] = useState(false)
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === 'undefined') return 'light'
-    const stored = window.localStorage?.getItem('spotter-theme')
-    if (stored === 'dark' || stored === 'light') return stored
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  })
+  const [theme, setTheme] = useTheme()
   const submitRef = useRef(null)
-
-  // The theme lives on <html> so the custom properties cascade everywhere,
-  // including the modal, which renders outside this component's own subtree.
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    window.localStorage?.setItem('spotter-theme', theme)
-  }, [theme])
 
   useEffect(() => {
     fetchHealth()
@@ -103,17 +102,6 @@ export default function App() {
   }, [])
 
 
-  const facts = useMemo(
-    () => [
-      ['70', 'hours / 8 days'],
-      ['11', 'h driving limit'],
-      ['14', 'h on-duty window'],
-      ['30', 'min break after 8 h'],
-      ['1,000', 'mi between fuel stops'],
-    ],
-    [],
-  )
-
   return (
     <div className="app">
       <header className="topbar">
@@ -128,7 +116,7 @@ export default function App() {
             </div>
           </div>
           <div className="topbar__facts">
-            {facts.map(([value, label]) => (
+            {HOS_FACTS.map(([value, label]) => (
               <span className="fact-chip" key={label}>
                 <b>{value}</b> {label}
               </span>

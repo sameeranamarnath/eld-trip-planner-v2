@@ -2,7 +2,11 @@
 
 from rest_framework import serializers
 
-MAX_CYCLE_HOURS = 70.0
+from eld.services.hos import DEFAULT_RULES
+
+# Read from the HOS rules instead of being repeated as a literal, so the
+# request validator cannot drift from the limit the simulator enforces.
+MAX_CYCLE_HOURS = DEFAULT_RULES.cycle_limit_hours
 
 
 class LogHeaderSerializer(serializers.Serializer):
