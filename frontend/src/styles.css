@@ -2,104 +2,180 @@
    Spotter ELD - design system
    ========================================================================== */
 
+/* Two rules keep the look coherent:
+   1. Every surface is a translucent pane of glass floating over the ambient
+      grid below. That is why the palette has to supply both the *fill* of a
+      pane and the *backdrop* it samples - a solid fill would read as plastic.
+   2. Colour is data, never decoration. Each tone pair below maps to exactly
+      one duty status or stop class, so changing a tint always means changing
+      meaning. Adding a status means adding a tone, not a new hex code. */
 :root {
+  /* Ambient backdrop: a cool 46px technical grid under two faint light pools.
+     Everything else is glass laid on top of this. */
+  --bg: #e7ecf4;
+  --bg-grid: rgba(15, 23, 42, 0.075);
+  --bg-glow-a: rgba(96, 150, 255, 0.5);
+  --bg-glow-b: rgba(248, 186, 96, 0.4);
+
   --ink: #0b1220;
-  --ink-soft: #24334d;
-  --surface: #ffffff;
-  --surface-2: #f6f8fc;
-  --surface-3: #eef2f8;
-  --border: #dfe6f0;
-  --border-strong: #c6d1e2;
+  --ink-soft: #26364f;
   --muted: #5b6b85;
   --muted-2: #8593a8;
 
+  /* Glass fills, thinnest first. --glass is the everyday pane; --glass-strong
+     is for panes that have to stay readable over busy content (map legend,
+     dropdowns, inputs) and --glass-dim for recessed wells and inactive
+     segments. --glass-lip is the 1px inner highlight that sells the material:
+     without it a translucent panel just looks faded. */
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --glass-dim: rgba(255, 255, 255, 0.34);
+  --glass-line: rgba(15, 23, 42, 0.08);
+  --glass-line-soft: rgba(15, 23, 42, 0.05);
+  --glass-lip: rgba(255, 255, 255, 0.9);
+  --blur: 20px;
+
+  /* Opaque fallbacks for the rare panel that should not show the grid. */
+  --surface: #ffffff;
+  --surface-2: #f4f7fb;
+  --surface-3: #e9eef7;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.17);
+
   --accent: #2563eb;
   --accent-ink: #1d4ed8;
-  --accent-soft: #e8efff;
-  --amber: #f59e0b;
-  --amber-soft: #fff4e0;
-  --violet: #7c3aed;
-  --violet-soft: #f0eaff;
-  --slate: #64748b;
-  --slate-soft: #eef1f6;
-  --green: #059669;
-  --green-soft: #e6f7f1;
-  --red: #dc2626;
-  --red-soft: #fdeceb;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --accent-line: rgba(37, 99, 235, 0.26);
 
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 18px;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow: 0 4px 12px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-lg: 0 18px 40px -12px rgba(15, 23, 42, 0.24);
+  /* Duty-status and stop-class tones. Because each tone carries bg + border +
+     ink together, the dark theme restates these instead of re-listing every
+     component that happens to tint itself. */
+  --amber: #f59e0b;
+  --amber-bg: rgba(245, 158, 11, 0.13);
+  --amber-bd: rgba(245, 158, 11, 0.32);
+  --amber-ink: #8a4b06;
+  --amber-soft: rgba(245, 158, 11, 0.13);
+
+  --violet: #7c3aed;
+  --violet-bg: rgba(124, 58, 237, 0.1);
+  --violet-bd: rgba(124, 58, 237, 0.26);
+  --violet-ink: #5b21b6;
+  --violet-soft: rgba(124, 58, 237, 0.1);
+
+  --slate: #64748b;
+  --slate-bg: rgba(100, 116, 139, 0.11);
+  --slate-bd: rgba(100, 116, 139, 0.26);
+  --slate-ink: #3f4c63;
+  --slate-soft: rgba(100, 116, 139, 0.11);
+
+  --green: #059669;
+  --green-bg: rgba(5, 150, 105, 0.11);
+  --green-bd: rgba(5, 150, 105, 0.28);
+  --green-ink: #0b6b4f;
+  --green-soft: rgba(5, 150, 105, 0.11);
+
+  --red: #dc2626;
+  --red-bg: rgba(220, 38, 38, 0.1);
+  --red-bd: rgba(220, 38, 38, 0.28);
+  --red-ink: #991b1b;
+  --red-soft: rgba(220, 38, 38, 0.1);
+
+  --pink-bg: rgba(219, 39, 119, 0.1);
+  --pink-bd: rgba(219, 39, 119, 0.26);
+  --pink-ink: #9d1d5e;
+
+  --drive-bg: rgba(37, 99, 235, 0.1);
+  --drive-bd: rgba(37, 99, 235, 0.26);
+  --drive-ink: #1e3f8f;
+
+  /* Wide and diffuse, not tight and dark: glass reads as glass when the
+     shadow is a soft bloom rather than a hard edge. */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 12px 28px -16px rgba(15, 23, 42, 0.24), 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 32px 64px -28px rgba(15, 23, 42, 0.34), 0 2px 6px rgba(15, 23, 42, 0.06);
+
+  --radius-sm: 9px;
+  --radius: 13px;
+  --radius-lg: 20px;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* Dark theme. Only the app chrome flips: the log sheet is a paper form and stays
-   white on purpose, in every theme and on paper. The legend chips are the only
-   rules that hardcode a tint, so they are re-pointed at the palette by hand. */
+/* Dark theme: the same geometry as an operations console. Note that the whole
+   override list this file used to carry - one rule per tinted component - is
+   gone: the tones above already describe themselves, so restating the tokens
+   is enough. Anything that still needs a bespoke rule here is a smell. */
 :root[data-theme='dark'] {
-  --ink: #e8eef8;
-  --ink-soft: #c4d0e2;
-  --surface: #0e1626;
-  --surface-2: #131d31;
-  --surface-3: #1b2740;
-  --border: #27344d;
-  --border-strong: #3a4a68;
-  --muted: #94a3bb;
-  --muted-2: #75859f;
+  --bg: #070b13;
+  --bg-grid: rgba(148, 178, 226, 0.075);
+  --bg-glow-a: rgba(45, 96, 190, 0.42);
+  --bg-glow-b: rgba(180, 120, 40, 0.22);
+
+  --ink: #e9eefa;
+  --ink-soft: #c3cfe2;
+  --muted: #93a2ba;
+  --muted-2: #74849e;
+
+  --glass: rgba(148, 178, 226, 0.07);
+  --glass-strong: rgba(148, 178, 226, 0.13);
+  --glass-dim: rgba(148, 178, 226, 0.05);
+  --glass-line: rgba(148, 178, 226, 0.16);
+  --glass-line-soft: rgba(148, 178, 226, 0.11);
+  --glass-lip: rgba(255, 255, 255, 0.07);
+
+  --surface: #0d1626;
+  --surface-2: #0a121f;
+  --surface-3: #131e31;
+  --border: rgba(148, 178, 226, 0.14);
+  --border-strong: rgba(148, 178, 226, 0.24);
+
   --accent: #5b8cff;
-  --accent-ink: #a6c0ff;
-  --accent-soft: #17233e;
+  --accent-ink: #a9c3ff;
+  --accent-soft: rgba(91, 140, 255, 0.14);
+  --accent-line: rgba(91, 140, 255, 0.34);
+
   --amber: #f0a92b;
-  --amber-soft: #2d2413;
+  --amber-bg: rgba(240, 169, 43, 0.14);
+  --amber-bd: rgba(240, 169, 43, 0.32);
+  --amber-ink: #f3c268;
+  --amber-soft: rgba(240, 169, 43, 0.14);
+
   --violet: #a78bfa;
-  --violet-soft: #241b3c;
+  --violet-bg: rgba(167, 139, 250, 0.14);
+  --violet-bd: rgba(167, 139, 250, 0.3);
+  --violet-ink: #c4a9fd;
+  --violet-soft: rgba(167, 139, 250, 0.14);
+
   --slate: #94a3bb;
-  --slate-soft: #1b2740;
+  --slate-bg: rgba(148, 163, 187, 0.12);
+  --slate-bd: rgba(148, 163, 187, 0.26);
+  --slate-ink: #c3cfe2;
+  --slate-soft: rgba(148, 163, 187, 0.12);
+
   --green: #34d399;
-  --green-soft: #11291f;
+  --green-bg: rgba(52, 211, 153, 0.13);
+  --green-bd: rgba(52, 211, 153, 0.3);
+  --green-ink: #6ee7b7;
+  --green-soft: rgba(52, 211, 153, 0.13);
+
   --red: #f87171;
-  --red-soft: #2e1716;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
-}
+  --red-bg: rgba(248, 113, 113, 0.13);
+  --red-bd: rgba(248, 113, 113, 0.3);
+  --red-ink: #fca5a5;
+  --red-soft: rgba(248, 113, 113, 0.13);
 
-:root[data-theme='dark'] .select,
-:root[data-theme='dark'] .suggestions,
-:root[data-theme='dark'] .btn--ghost,
-:root[data-theme='dark'] .example-chip,
-:root[data-theme='dark'] .empty__feature {
-  background: var(--surface-2);
-}
+  --pink-bg: rgba(244, 114, 182, 0.13);
+  --pink-bd: rgba(244, 114, 182, 0.28);
+  --pink-ink: #f9a8d4;
 
-:root[data-theme='dark'] .tab--active {
-  background: var(--surface);
-}
+  --drive-bg: rgba(91, 140, 255, 0.14);
+  --drive-bd: rgba(91, 140, 255, 0.32);
+  --drive-ink: #a9c3ff;
 
-:root[data-theme='dark'] .chip--drive {
-  background: var(--accent-soft);
-  border-color: #2b3f6b;
-  color: var(--accent-ink);
-}
-
-:root[data-theme='dark'] .chip--on {
-  border-color: #4a3a1b;
-  color: #f3c268;
-}
-
-:root[data-theme='dark'] .chip--sb {
-  border-color: #3d2f63;
-  color: #c4a9fd;
-}
-
-:root[data-theme='dark'] .chip--off {
-  border-color: #2b3950;
-  color: var(--ink-soft);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow: 0 16px 34px -20px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 40px 70px -30px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Paper stays paper. */
@@ -113,6 +189,34 @@
   box-sizing: border-box;
 }
 
+/* Slim, self-effacing scrollbars. Chrome's default bar is heavy enough to break
+   the minimalism, and it has to follow the theme rather than stay grey. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  background-clip: content-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-2);
+  background-clip: content-box;
+}
+
 html,
 body,
 #root {
@@ -123,10 +227,23 @@ body {
   margin: 0;
   font-family: var(--font);
   color: var(--ink);
-  background: var(--surface-2);
+  /* The body background propagates to the canvas, so this single rule paints the
+     whole viewport. `fixed` on the two glows keeps them anchored to the top of
+     the screen instead of stretching down a 3,000px results page. */
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px),
+    radial-gradient(900px 520px at 12% -8%, var(--bg-glow-a), transparent 62%),
+    radial-gradient(780px 460px at 96% -4%, var(--bg-glow-b), transparent 60%);
+  background-size: 46px 46px, 46px 46px, 100% 100%, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-attachment: scroll, scroll, fixed, fixed;
   -webkit-font-smoothing: antialiased;
   font-size: 15px;
   line-height: 1.5;
+  /* Every number in this app is read against another number - hours, miles,
+     odometer. Tabular figures let them line up instead of shimmying. */
+  font-variant-numeric: tabular-nums;
 }
 
 h1,
@@ -157,18 +274,32 @@ button {
 }
 
 .topbar {
-  background: linear-gradient(135deg, #0b1220 0%, #16233c 58%, #1d3357 100%);
+  /* Sticky, so the HOS limits and the theme/haul controls stay reachable while a
+     long itinerary scrolls. Translucent rather than opaque on purpose: the grid
+     shows faintly through, which is what separates glass from a painted band. */
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: linear-gradient(
+    135deg,
+    rgba(11, 18, 32, 0.9) 0%,
+    rgba(22, 35, 60, 0.86) 58%,
+    rgba(29, 51, 87, 0.84) 100%
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 34px -26px rgba(5, 10, 20, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.09);
 }
 
 .topbar__inner {
   max-width: 1560px;
   margin: 0 auto;
-  padding: 18px 28px;
+  padding: 15px 28px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
@@ -181,12 +312,12 @@ button {
 .brand__mark {
   width: 40px;
   height: 40px;
-  border-radius: 11px;
+  border-radius: 12px;
   background: linear-gradient(140deg, var(--amber), #f97316);
   display: grid;
   place-items: center;
   color: #1b1206;
-  box-shadow: 0 6px 18px -6px rgba(245, 158, 11, 0.8);
+  box-shadow: 0 8px 22px -8px rgba(245, 158, 11, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.55);
   flex: none;
 }
 
@@ -211,10 +342,14 @@ button {
   font-size: 12px;
   padding: 5px 11px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.86);
+  /* Chips in the topbar are the one place that never flips theme, so they are
+     tinted against the bar rather than against --glass. */
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .fact-chip b {
@@ -246,7 +381,8 @@ button {
 
 .sticky-panel {
   position: sticky;
-  top: 24px;
+  /* Clears the sticky topbar so the form never slides underneath it. */
+  top: 92px;
 }
 
 @media (max-width: 1180px) {
@@ -261,20 +397,25 @@ button {
 /* ----------------------------------------------------------------- cards -- */
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  /* The everyday pane. The inset lip is doing the real work: a translucent fill
+     on its own reads as "faded", and it is the 1px top highlight plus the
+     diffuse drop shadow that read as "thick glass". */
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+  backdrop-filter: blur(var(--blur)) saturate(150%);
+  border: 1px solid var(--glass-line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-lip);
   overflow: hidden;
 }
 
 .card__head {
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--glass-line-soft);
   display: flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(180deg, #fff, #fbfcfe);
+  background: var(--glass-dim);
 }
 
 .card__head h2 {
@@ -356,11 +497,14 @@ button {
   width: 100%;
   padding: 11px 13px;
   border-radius: var(--radius);
-  border: 1px solid var(--border-strong);
-  background: #fff;
+  border: 1px solid var(--glass-line);
+  /* Nearly opaque on purpose: an input still has to be readable with the map
+     and its labels moving behind it. */
+  background: var(--glass-strong);
   color: var(--ink);
   font-size: 14px;
   font-family: inherit;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
@@ -376,7 +520,9 @@ button {
 .select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
+  /* The tokenised ring means the focus halo now follows the accent instead of
+     hardcoding the old blue, so it survives a theme change. */
+  box-shadow: 0 0 0 3.5px var(--accent-soft), inset 0 1px 0 var(--glass-lip);
 }
 
 .input:disabled {
@@ -398,10 +544,12 @@ button {
   left: 0;
   right: 0;
   z-index: 40;
-  background: #fff;
-  border: 1px solid var(--border);
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
+  backdrop-filter: blur(var(--blur)) saturate(160%);
+  border: 1px solid var(--glass-line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-lip);
   overflow: hidden;
   max-height: 268px;
   overflow-y: auto;
@@ -418,7 +566,7 @@ button {
   width: 100%;
   text-align: left;
   color: var(--ink);
-  border-bottom: 1px solid var(--surface-3);
+  border-bottom: 1px solid var(--glass-line-soft);
 }
 
 .suggestion:last-child {
@@ -481,43 +629,47 @@ button {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, var(--accent), #1e40af);
+  /* The single saturated solid on the page. Everything else is glass, so the
+     one primary action reads instantly without needing a louder colour. */
+  background: linear-gradient(135deg, var(--accent), #1e3fa8);
   color: #fff;
-  box-shadow: 0 8px 20px -10px rgba(37, 99, 235, 0.9);
+  box-shadow: 0 12px 26px -12px rgba(37, 99, 235, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .btn--primary:hover {
-  box-shadow: 0 10px 26px -10px rgba(37, 99, 235, 1);
+  box-shadow: 0 16px 32px -12px rgba(37, 99, 235, 1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn--primary:disabled {
-  background: var(--border-strong);
+  background: var(--muted-2);
   box-shadow: none;
   cursor: not-allowed;
   color: #fff;
 }
 
 .btn--ghost {
-  background: #fff;
-  border-color: var(--border-strong);
+  background: var(--glass-strong);
+  border-color: var(--glass-line);
   color: var(--ink-soft);
+  box-shadow: inset 0 1px 0 var(--glass-lip);
 }
 
 .btn--ghost:hover {
-  background: var(--surface-2);
-  border-color: var(--muted-2);
+  background: var(--glass);
+  border-color: var(--border-strong);
 }
 
 .btn--subtle {
-  background: var(--surface-3);
+  background: var(--glass-dim);
   color: var(--ink-soft);
-  border-color: transparent;
+  border-color: var(--glass-line-soft);
   padding: 8px 12px;
   font-size: 13px;
 }
 
 .btn--subtle:hover {
-  background: var(--border);
+  background: var(--glass);
+  border-color: var(--glass-line);
 }
 
 .btn--block {
@@ -543,15 +695,15 @@ button {
 }
 
 .alert--error {
-  background: var(--red-soft);
-  border-color: #f6bdb9;
-  color: #8f1d17;
+  background: var(--red-bg);
+  border-color: var(--red-bd);
+  color: var(--red-ink);
 }
 
 .alert--info {
   background: var(--accent-soft);
-  border-color: #c3d5fb;
-  color: #1a3f8f;
+  border-color: var(--accent-line);
+  color: var(--accent-ink);
 }
 
 .example-row {
@@ -562,7 +714,7 @@ button {
 
 .example-chip {
   border: 1px dashed var(--border-strong);
-  background: #fff;
+  background: var(--glass-dim);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 12.5px;
@@ -599,7 +751,14 @@ button {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #eef2f8 25%, #e2e9f4 50%, #eef2f8 75%);
+  /* Tokenised so placeholders stop flashing bright white on a dark console -
+     which is what the old hardcoded #eef2f8 shimmer did. */
+  background: linear-gradient(
+    90deg,
+    var(--glass-dim) 25%,
+    var(--glass-strong) 50%,
+    var(--glass-dim) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.3s infinite;
   border-radius: var(--radius-sm);
@@ -617,9 +776,14 @@ button {
   display: flex;
   gap: 4px;
   padding: 5px;
-  background: var(--surface-3);
+  /* A recessed well: dim fill, soft border. The active segment is a brighter
+     pane sitting on top of it, which is what makes the control read as a
+     physical switch rather than three coloured labels. */
+  background: var(--glass-dim);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-line-soft);
 }
 
 .tab {
@@ -641,9 +805,9 @@ button {
 }
 
 .tab--active {
-  background: #fff;
+  background: var(--glass-strong);
   color: var(--ink);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-lip);
 }
 
 .tab__count {
@@ -659,15 +823,17 @@ button {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  /* 140px, not 148px. At 148 the six summary tiles wrapped five-and-one and left
+     a ragged hole in the last row on a 1440px screen. */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
 }
 
 .stat {
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-line-soft);
   border-radius: var(--radius);
   padding: 13px 14px;
-  background: linear-gradient(180deg, #fff, #fafcff);
+  background: var(--glass-dim);
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -686,9 +852,9 @@ button {
 }
 
 .stat__value {
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -698,13 +864,13 @@ button {
 }
 
 .stat--accent {
-  background: linear-gradient(140deg, var(--accent-soft), #fff);
-  border-color: #cadcfb;
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
 }
 
 .stat--amber {
-  background: linear-gradient(140deg, var(--amber-soft), #fff);
-  border-color: #fbe0b0;
+  background: var(--amber-bg);
+  border-color: var(--amber-bd);
 }
 
 /* ------------------------------------------------------------------- map -- */
@@ -726,8 +892,8 @@ button {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--surface-3);
+  border: 1px solid var(--glass-line);
+  background: var(--glass-dim);
 }
 
 .map-canvas {
@@ -740,15 +906,19 @@ button {
   left: 14px;
   bottom: 14px;
   z-index: 500;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--border);
+  /* The heaviest glass in the app: it sits over photoreal map tiles and still
+     has to stay legible, so it gets a thicker fill and a stronger blur than an
+     ordinary card. */
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid var(--glass-line);
   border-radius: var(--radius);
   padding: 10px 12px;
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-lip);
   max-width: calc(100% - 28px);
 }
 
@@ -829,7 +999,7 @@ button {
 }
 
 .stop--drive {
-  background: linear-gradient(90deg, rgba(37, 99, 235, 0.05), transparent 65%);
+  background: linear-gradient(90deg, var(--drive-bg), transparent 65%);
 }
 
 .stop__time {
@@ -890,7 +1060,7 @@ button {
 }
 
 .stop--pin:hover {
-  background: var(--surface-2);
+  background: var(--glass-dim);
 }
 
 .stop--active {
@@ -898,8 +1068,8 @@ button {
 }
 
 .stop__marker--drive {
-  background: #dbe6fb !important;
-  color: #1e40af !important;
+  background: var(--drive-bg) !important;
+  color: var(--drive-ink) !important;
   box-shadow: none !important;
 }
 
@@ -913,10 +1083,11 @@ button {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
-  background: var(--surface-3);
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  background: var(--glass-dim);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-line-soft);
 }
 
 .day-divider:first-child {
@@ -936,13 +1107,13 @@ button {
   border: 1px solid transparent;
 }
 
-.badge--pickup { background: var(--green-soft); color: #0b6b4f; border-color: #b9e6d8; }
-.badge--dropoff { background: #fdeaf3; color: #9d1d5e; border-color: #f8c9e0; }
-.badge--fuel { background: var(--amber-soft); color: #92500c; border-color: #fbe0b0; }
-.badge--break { background: var(--violet-soft); color: #5b21b6; border-color: #ddcffb; }
-.badge--rest { background: var(--slate-soft); color: #3f4c63; border-color: #d8dfeb; }
-.badge--restart { background: var(--red-soft); color: #991b1b; border-color: #f6bdb9; }
-.badge--inspection { background: var(--accent-soft); color: var(--accent-ink); border-color: #cadcfb; }
+.badge--pickup { background: var(--green-bg); color: var(--green-ink); border-color: var(--green-bd); }
+.badge--dropoff { background: var(--pink-bg); color: var(--pink-ink); border-color: var(--pink-bd); }
+.badge--fuel { background: var(--amber-bg); color: var(--amber-ink); border-color: var(--amber-bd); }
+.badge--break { background: var(--violet-bg); color: var(--violet-ink); border-color: var(--violet-bd); }
+.badge--rest { background: var(--slate-bg); color: var(--slate-ink); border-color: var(--slate-bd); }
+.badge--restart { background: var(--red-bg); color: var(--red-ink); border-color: var(--red-bd); }
+.badge--inspection { background: var(--drive-bg); color: var(--drive-ink); border-color: var(--drive-bd); }
 
 /* ------------------------------------------------------------- log sheet -- */
 
@@ -1004,25 +1175,50 @@ button {
   font-size: 11.5px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--surface-3);
-  border: 1px solid var(--border);
+  background: var(--glass-dim);
+  border: 1px solid var(--glass-line-soft);
   color: var(--ink-soft);
   font-weight: 600;
   white-space: nowrap;
+  box-shadow: inset 0 1px 0 var(--glass-lip);
 }
 
-.chip--drive { background: #e8efff; border-color: #cadcfb; color: #1e3f8f; }
-.chip--on { background: var(--amber-soft); border-color: #fbe0b0; color: #92500c; }
-.chip--sb { background: var(--violet-soft); border-color: #ddcffb; color: #5b21b6; }
-.chip--off { background: var(--slate-soft); border-color: #d8dfeb; color: #3f4c63; }
+/* One rule per duty status, each reading its tone from the palette. These used
+   to need a matching dark-theme override apiece; now they follow the tone and
+   that whole override block is gone. */
+.chip--drive {
+  background: var(--drive-bg);
+  border-color: var(--drive-bd);
+  color: var(--drive-ink);
+}
+.chip--on {
+  background: var(--amber-bg);
+  border-color: var(--amber-bd);
+  color: var(--amber-ink);
+}
+.chip--sb {
+  background: var(--violet-bg);
+  border-color: var(--violet-bd);
+  color: var(--violet-ink);
+}
+.chip--off {
+  background: var(--slate-bg);
+  border-color: var(--slate-bd);
+  color: var(--slate-ink);
+}
 
 /* ---------------------------------------------------------------- empty -- */
 
 .empty {
-  border: 1px dashed var(--border-strong);
+  /* Solid glass instead of the old dashed placeholder frame. This is the first
+     thing anyone sees, so it is what sets the material for the whole app. */
+  border: 1px solid var(--glass-line);
   border-radius: var(--radius-lg);
-  background: linear-gradient(160deg, #fff, #f7faff);
-  padding: 40px 34px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+  backdrop-filter: blur(var(--blur)) saturate(150%);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-lip);
+  padding: 44px 34px;
   text-align: center;
 }
 
@@ -1033,9 +1229,10 @@ button {
   display: grid;
   place-items: center;
   margin: 0 auto 16px;
-  background: linear-gradient(140deg, var(--accent-soft), #fff);
-  border: 1px solid #cadcfb;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
   color: var(--accent-ink);
+  box-shadow: inset 0 1px 0 var(--glass-lip);
 }
 
 .empty h2 {
@@ -1059,10 +1256,10 @@ button {
 }
 
 .empty__feature {
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-line-soft);
   border-radius: var(--radius);
   padding: 13px 14px;
-  background: #fff;
+  background: var(--glass-dim);
 }
 
 .empty__feature h4 {
@@ -1211,9 +1408,9 @@ button {
   width: 30px;
   height: 30px;
   border-radius: 9px;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  border: 1px solid #cadcfb;
+  background: var(--drive-bg);
+  color: var(--drive-ink);
+  border: 1px solid var(--drive-bd);
 }
 
 .direction__text {
@@ -1254,17 +1451,22 @@ button {
   align-items: flex-start;
   justify-content: center;
   padding: 6vh 18px 18px;
-  background: rgba(8, 13, 24, 0.55);
-  backdrop-filter: blur(3px);
+  /* A deeper scrim than before. The panel behind it is translucent now, so the
+     scrim is what supplies the contrast the dialog reads against. */
+  background: rgba(6, 10, 20, 0.62);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  backdrop-filter: blur(8px) saturate(120%);
   overflow-y: auto;
 }
 
 .modal__panel {
   width: min(860px, 100%);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--glass-line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-lip);
   padding: 22px 24px 24px;
 }
 
@@ -1297,9 +1499,9 @@ button {
 }
 
 .rule {
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-line-soft);
   border-radius: var(--radius);
-  background: var(--surface-2);
+  background: var(--glass-dim);
   padding: 14px;
   display: flex;
   flex-direction: column;
