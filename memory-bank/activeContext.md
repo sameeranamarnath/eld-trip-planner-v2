@@ -27,10 +27,10 @@ narrates the frozen feature set.
 ALL work happens inside `c:\projects\assessments\spotter2` only. Do not touch `..\spotter`.
 
 ## Current focus
-T7 AND T13 ARE DONE. Backend `https://spotter2-eld-api-rose.vercel.app` (health 200, plan 200),
-frontend `https://spotter2-eld-web.vercel.app` (200, bundle carries the API URL). Refactor pass
-committed at `7628be7`; the full programme below is complete and verified.
-Both apps are REDEPLOYED with the refactor and the live end-to-end checks pass. Repo hygiene is done too: the remote is private, the root holds only README/Dockerfile/render.yaml/.gitignore, and all three source documents live in docs/reference/ with an index.
+T2 (glass minimalist restyle) IS LIVE, and T7/T13 remain green. `frontend/src/styles.css` is the
+only file that changed - no JSX, every class name preserved - committed `3148a3c` and pushed.
+`https://spotter2-eld-web.vercel.app` serves `assets/index-CGXxAtpl.css` (byte-identical to the
+locally verified build) and the API is healthy at `https://spotter2-eld-api-rose.vercel.app`.
 
 ## Vercel deploy facts (learned the hard way)
 - **A deploy that comes back `readyState: BLOCKED` is almost always the commit-author check.**
@@ -49,7 +49,18 @@ Both apps are REDEPLOYED with the refactor and the live end-to-end checks pass. 
   catch-all rewrite made Vercel pass `/api/index.py` as the request path and 404'd every route.
 - Canonical URLs: backend `spotter2-eld-api-rose.vercel.app` (the `-rose` suffix is real), so the
   frontend's `VITE_API_BASE_URL` points there.
-- Token lives in `C:\projects\assessments\spotter\.env` as `VERCEL_TOKEN` (the sibling project).
+- Token lives in `spotter2\.env` as `VERCEL_TOKEN` (also present in the sibling `..\spotter\.env`);
+  both work, and **no `--scope` is needed** for either project.
+- **Being a team member is not the check; the COMMIT AUTHOR is.** Adding
+  `sameeranamarnath@gmail.com` to the team does nothing on its own, because Vercel matches the
+  **commit-author email recorded in the deployment metadata** against the member list. Commits
+  authored as `85400557+sameeranamarnath@users.noreply.github.com` are blocked regardless of who
+  owns the project or clicks deploy. The fix is the repo-local `git config user.email`.
+- **There is NO Vercel git integration on `spotter2-eld-web`: pushing does not deploy.** A `git
+  push` creates no deployment at all - the CLI is the only path, which is convenient now that
+  GitHub Actions is unavailable. CLI deploys are subject to the same commit-author check.
+- Probe any suspicious deployment with `vercel inspect <url>`; its `reason` field names the cause
+  in plain words.
 
 ## Live verification (re-run any time, no servers needed)
 - `python backend/scripts/verify_contract.py https://spotter2-eld-api-rose.vercel.app/api/v1`
@@ -129,16 +140,20 @@ Then: redeploy both projects and re-verify live end to end.
   concat entry inherits the previous duration and adds a whole extra shot (249s not 240s).
 - Parsing `ffprobe -of default=noprint_wrappers=1` into one flat dict - the subtitle stream's
   `width=N/A` silently overwrites the video's. Query each stream with `-select_streams`.
-- `playwright-parallel` browser sessions - the MCP writes its output dir into
-  `C:\Program Files\Microsoft VS Code\.playwright-mcp\` which is not writable (EPERM). Use
-  `puppeteer-core` + Edge (the proven `capture-video.mjs` pattern) for any headless capture.
+- `playwright-parallel`'s `browser_navigate` / `browser_take_screenshot` - the MCP writes into
+  `C:\Program Files\Microsoft VS Code\.playwright-mcp\`, which is not writable (EPERM). The
+  session itself works fine: drive it with `browser_run_code_unsafe` using absolute `c:/...`
+  paths for screenshots, and `browser_evaluate` to read state. For unattended video capture
+  still prefer `puppeteer-core` + Edge (the proven `capture-video.mjs` pattern).
 - Fetching eCFR.gov - it serves a CAPTCHA bot wall. Use law.cornell.edu for CFR text.
 
 ## Next steps
-1. **T7 only** - push the repo and deploy. Blocked on: which remote (public
-   `spotter2-eld-trip-planner`, private same name, public `spotter-eld-trip-planner`, or
-   local-only) and on credentials (no Vercel/Docker token on disk; `gh` is authed as
-   `amar-cbre`).
+1. Redeploy with the CLI whenever the frontend or backend changes - there is no git
+   integration, so `git push` alone will NOT update either site:
+   `cd frontend; npx vercel deploy --prod --yes --token <VERCEL_TOKEN>` (add `--archive=tgz`
+   to shorten the upload). The deployment is created server-side, so even a local CLI that is
+   killed still finishes the build and moves the production alias - poll
+   `npx vercel ls <project>` to confirm `Ready`.
 2. The user records their own Loom against `docs/recording/voiceover-script.md` and
    `docs/video/spotter2-loom-reference.mp4`.
 
