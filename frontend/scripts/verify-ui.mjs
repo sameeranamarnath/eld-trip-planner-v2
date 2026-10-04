@@ -1,6 +1,7 @@
 /**
- * TEMPORARY UI verification: exercises the new "Route instructions" tab and
- * renders the log sheets to PDF to prove the landscape print rule works.
+ * Headless UI smoke test: plans a trip through the real form, then checks the
+ * route instructions, the printed log sheets, the theme toggle and the mobile
+ * layout.
  *
  * Usage (from frontend/):  node scripts/verify-ui.mjs
  * Output: docs/video/build/verify/  (gitignored)
@@ -20,6 +21,38 @@ const APP = process.env.APP_URL || 'http://127.0.0.1:5173'
 
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms))
 
+/** React tracks the DOM value, so drive the native setter and fire the event. */
+async function fillLocations(page, values) {
+  const ids = ['current_location', 'pickup_location', 'dropoff_location']
+  for (let index = 0; index < ids.length; index += 1) {
+    await page.evaluate(
+      (id, value) => {
+        const input = document.getElementById(id)
+        const setter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          'value',
+        ).set
+        setter.call(input, value)
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        input.blur()
+      },
+      ids[index],
+      values[index],
+    )
+  }
+}
+
+async function clickButtonByText(page, text) {
+  return page.evaluate((want) => {
+    const button = Array.from(document.querySelectorAll('button')).find((el) =>
+      el.innerText.includes(want),
+    )
+    if (!button) return false
+    button.click()
+    return true
+  }, text)
+}
+
 async function main() {
   mkdirSync(OUT, { recursive: true })
   const browser = await puppeteer.launch({
@@ -34,13 +67,17 @@ async function main() {
     if (msg.type() === 'error') console.log('  console.error:', msg.text().slice(0, 200))
   })
 
-  const trip =
-    'current=Green%20Bay%2C%20WI&pickup=Chicago%2C%20IL&dropoff=Nashville%2C%20TN&cycle=0'
-  await page.goto(`${APP}/?${trip}&run=1&tab=directions`, {
-    waitUntil: 'networkidle2',
-    timeout: 60000,
-  })
+  await page.goto(APP, { waitUntil: 'networkidle2', timeout: 60000 })
+  await page.screenshot({ path: resolve(OUT, 'empty-state.png') })
+  await fillLocations(page, ['Green Bay, WI', 'Chicago, IL', 'Nashville, TN'])
+  await clickButtonByText(page, 'Plan trip')
 
+  // The planner calls out to OSRM and the geocoders, so this is the slow wait.
+  await page.waitForFunction(() => document.querySelectorAll('.stat').length > 0, {
+    timeout: 120000,
+  })
+  await page.screenshot({ path: resolve(OUT, 'route-view.png') })
+  await clickButtonByText(page, 'Route instructions')
   await page.waitForFunction(() => document.querySelectorAll('.direction').length > 0, {
     timeout: 60000,
   })
@@ -107,30 +144,13 @@ async function main() {
     return ok
   }
 
-  // Dark mode: the toggle writes data-theme onto <html>.
-  const toggled = await clickByLabelPrefix('Switch to dark')
+  // The toggle writes data-theme onto <html>; either direction is fine.
+  const themeBefore = await page.evaluate(() => document.documentElement.dataset.theme)
+  const toggled = await clickByLabelPrefix('Switch to')
   await sleep(500)
-  const themeAttr = await page.evaluate(() => document.documentElement.dataset.theme)
-  console.log(`theme toggle clicked=${toggled} -> data-theme=${themeAttr}`)
+  const themeAfter = await page.evaluate(() => document.documentElement.dataset.theme)
+  console.log(`theme toggle clicked=${toggled} ${themeBefore} -> ${themeAfter}`)
   await page.screenshot({ path: resolve(OUT, 'theme-dark.png') })
-
-  // HOS rules dialog.
-  const opened = await page.evaluate(() => {
-    const button = Array.from(document.querySelectorAll('button')).find((el) =>
-      el.innerText.includes('HOS'),
-    )
-    if (!button) return false
-    button.click()
-    return true
-  })
-  await sleep(400)
-  const ruleCount = await page.evaluate(() => document.querySelectorAll('.rule').length)
-  console.log(`hos rules opened=${opened} rules rendered=${ruleCount}`)
-  await page.screenshot({ path: resolve(OUT, 'hos-rules.png') })
-  await page.keyboard.press('Escape')
-  await sleep(300)
-  const closed = await page.evaluate(() => document.querySelectorAll('.modal').length === 0)
-  console.log(`escape closes the dialog: ${closed}`)
 
   // Narrow phone width, on the turn list.
   await page.evaluate(() => {

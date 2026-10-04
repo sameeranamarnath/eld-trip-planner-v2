@@ -1,13 +1,7 @@
 import Icon from './Icon.jsx'
 import { formatMinutesShort } from '../format.js'
 
-/**
- * Turn-by-turn route instructions.
- *
- * OSRM returns a machine-readable `{type, modifier}` pair per maneuver rather
- * than a sentence, and the backend has already turned that into prose. This
- * component only picks the glyph and lays the steps out.
- */
+/** Turn-by-turn route instructions, one card per leg. */
 
 const TYPE_ICON = {
   depart: 'depart',
@@ -55,9 +49,6 @@ export default function Directions({ plan }) {
         </span>
         <span className="chip">
           <b>{steps.length}</b> turn-by-turn steps
-        </span>
-        <span className="chip">
-          Instructions follow the route the stops and rests were planned on
         </span>
       </div>
 

@@ -13,8 +13,7 @@ function readInitialTheme() {
  * Colour theme, seeded from localStorage and falling back to the OS setting.
  *
  * The value is mirrored onto `<html>` rather than a local wrapper so the custom
- * properties cascade everywhere - including the HOS dialog, which renders in a
- * portal outside this component's own subtree.
+ * properties cascade everywhere.
  */
 export function useTheme() {
   const [theme, setTheme] = useState(readInitialTheme)

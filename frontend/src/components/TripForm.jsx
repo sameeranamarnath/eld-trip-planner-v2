@@ -2,37 +2,6 @@ import { useState } from 'react'
 import Icon from './Icon.jsx'
 import LocationField from './LocationField.jsx'
 
-const EXAMPLE_TRIPS = [
-  {
-    label: 'Green Bay → Chicago → Nashville',
-    current: 'Green Bay, WI',
-    pickup: 'Chicago, IL',
-    dropoff: 'Nashville, TN',
-    cycle: 0,
-  },
-  {
-    label: 'Coast-to-coast · 4 log sheets',
-    current: 'Green Bay, WI',
-    pickup: 'Denver, CO',
-    dropoff: 'Los Angeles, CA',
-    cycle: 12,
-  },
-  {
-    label: 'Near the cycle limit',
-    current: 'Atlanta, GA',
-    pickup: 'Charlotte, NC',
-    dropoff: 'Newark, NJ',
-    cycle: 62,
-  },
-]
-
-/** Examples always start at 06:30 today so the generated logs are comparable. */
-function morningDeparture() {
-  const now = new Date()
-  const pad = (value) => String(value).padStart(2, '0')
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T06:30`
-}
-
 export default function TripForm({ value, onChange, onSubmit, loading, error }) {
   const [showAdvanced, setShowAdvanced] = useState(false)
 
@@ -57,7 +26,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
         <Icon name="route" size={18} />
         <div>
           <h2>Trip details</h2>
-          <p>Everything the planner needs to build a legal run.</p>
         </div>
       </div>
 
@@ -66,7 +34,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
           <LocationField
             id="current_location"
             label="Current location"
-            hint="where the truck sits now"
             icon="pin"
             accent="#2563eb"
             placeholder="e.g. Green Bay, WI"
@@ -77,7 +44,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
           <LocationField
             id="pickup_location"
             label="Pickup location"
-            hint="1 h on duty"
             icon="package"
             accent="#059669"
             placeholder="e.g. Chicago, IL"
@@ -88,7 +54,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
           <LocationField
             id="dropoff_location"
             label="Drop-off location"
-            hint="1 h on duty"
             icon="flag"
             accent="#db2777"
             placeholder="e.g. Nashville, TN"
@@ -103,7 +68,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
                 style={{ background: '#f59e0b', boxShadow: '0 0 0 3px #f59e0b22' }}
               />
               Current cycle used
-              <span className="field__hint">70 h / 8 days</span>
             </label>
             <div className="range-row">
               <input
@@ -117,10 +81,6 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
               />
               <span className="range-badge">{Number(value.cycle_used_hours).toFixed(1)} h</span>
             </div>
-            <span className="field__hint">
-              Hours already burned in the rolling 8-day window. Hitting 70 h forces a 34-hour
-              restart.
-            </span>
           </div>
 
           <button
@@ -129,8 +89,8 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
             onClick={() => setShowAdvanced((prev) => !prev)}
             aria-expanded={showAdvanced}
           >
-            <Icon name={showAdvanced ? 'x' : 'sparkle'} size={15} />
-            {showAdvanced ? 'Hide optional details' : 'Add departure time & log header'}
+            <Icon name={showAdvanced ? 'x' : 'calendar'} size={15} />
+            {showAdvanced ? 'Hide departure & log header' : 'Departure time & log header'}
           </button>
 
           {showAdvanced ? (
@@ -237,40 +197,17 @@ export default function TripForm({ value, onChange, onSubmit, loading, error }) 
             {loading ? (
               <>
                 <span className="spinner" />
-                Planning route &amp; logs…
+                Planning…
               </>
             ) : (
               <>
-                <Icon name="sparkle" size={16} />
-                Build route &amp; ELD logs
+                <Icon name="route" size={16} />
+                Plan trip
               </>
             )}
           </button>
         </div>
 
-        <hr className="divider" />
-        <div className="section-title">Try an example</div>
-        <div className="example-row">
-          {EXAMPLE_TRIPS.map((example) => (
-            <button
-              key={example.label}
-              type="button"
-              className="example-chip"
-              disabled={loading}
-              onClick={() =>
-                set({
-                  current_location: example.current,
-                  pickup_location: example.pickup,
-                  dropoff_location: example.dropoff,
-                  cycle_used_hours: example.cycle,
-                  departure_time: morningDeparture(),
-                })
-              }
-            >
-              {example.label}
-            </button>
-          ))}
-        </div>
       </div>
     </form>
   )
