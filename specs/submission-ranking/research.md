@@ -3,7 +3,7 @@
 Question this file answers: **what does "best" mean for this assessment, and where do we
 actually stand?** Everything below is evidence, not opinion.
 
-## 1. The assessment's own words (extracted from `new-full-stack-dev-assessment.docx`)
+## 1. The assessment's own words (extracted from `docs/reference/assessment-brief.docx`)
 
 Deliverables, verbatim:
 

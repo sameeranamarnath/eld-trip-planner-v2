@@ -158,9 +158,39 @@ Nothing needs a database or a paid key. Two pieces, deployed separately:
   `gunicorn config.wsgi:application`; `gunicorn` is pinned in `backend/requirements.txt`.
 - **Docker** - `docker build -t spotter-eld . && docker run -p 8000:8000 spotter-eld`.
   Works anywhere that runs containers (Fly.io, Railway, Cloud Run).
-- **Vercel (serverless)** - `backend/vercel.json` rewrites everything to
-  `backend/api/index.py`, which exposes the Django WSGI callable as `app`.
+- **Vercel (serverless)** - push `backend/`. Vercel's Django preset resolves the app from
+  `WSGI_APPLICATION`, so no `rewrites` are needed - a catch-all rewrite passes `/api/index.py`
+  through as the request path and 404s every route. `backend/vercel.json` only raises the
+  function timeout to 60 s, and `backend/api/index.py` exposes the same WSGI callable as `app`
+  for runtimes that look for that name.
 
 **Frontend** - deploy `frontend/` to Vercel; `frontend/vercel.json` is already configured
 for Vite with an SPA rewrite. Set `VITE_API_BASE_URL` to the backend's `/api/v1` origin and
 make sure the backend's `CORS_ALLOW_ALL_ORIGINS` (or an explicit allow-list) covers it.
+
+## Repository layout
+
+```
+backend/               Django project
+  config/              settings, urls, wsgi/asgi
+  eld/                 the app under test
+    services/          http, geocoding, routing, hos (the simulator), logs, planner
+    tests/             offline unit suite - no network, no fixtures
+  scripts/             smoke_plan.py, verify_contract.py (end-to-end contract check)
+  api/index.py         WSGI shim for Vercel's Python runtime
+frontend/              Vite + React app
+  src/components/      one component per panel
+  src/*.js             api, format, markers, logHeader, useTheme
+  scripts/             capture-video.mjs (rebuild the video assets), verify-ui.mjs
+docs/
+  reference/           the source material this was built against
+  screens/             stills used in the write-up
+  recording/           the voiceover script for the Loom
+  video/               the generators plus the rendered MP4s
+specs/                 ranking research, spec and task list
+memory-bank/           working state carried between sessions
+```
+
+Naming: Python modules and functions `snake_case`, classes `PascalCase`, constants
+`UPPER_SNAKE`; React components `PascalCase.jsx`, hooks `useX.js`, other modules camelCase
+`.js`; Markdown and asset filenames kebab-case. Everything is UTF-8.
