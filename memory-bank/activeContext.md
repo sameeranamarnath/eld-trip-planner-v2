@@ -61,6 +61,7 @@ Both apps are REDEPLOYED with the refactor and the live end-to-end checks pass.
 1. The user records their own Loom against `docs/recording/voiceover-script.md`.
 2. The local dev servers (Vite 5173 / Django 8090) are stopped - `npm run dev` and
    `python manage.py runserver 127.0.0.1:8090` bring them back for local work.
+3. `new-full-stack-dev-assessment.docx` is the one file still at the repo root: an external process holds it open read+write without delete-sharing, so it cannot be renamed. Word is ruled out (no `~$` owner file), so a sync client is the likely holder. Close it, then run `git mv new-full-stack-dev-assessment.docx docs/reference/assessment-brief.docx`.
 
 
 ## T13 refactor programme (verify after every step)
