@@ -70,5 +70,8 @@
 [done] T13 frontend: extracted markers.js (pin model shared by map + itinerary), logHeader.js, useTheme.js; hoisted the header fact chips to a module constant (dropped the constant useMemo); deleted unused hoursToWords/titleCase. `npm run lint` is now 0 errors, 0 warnings (was 4 fast-refresh).
 [done] T13 verified: 52/52 unit tests, verify_contract.py 633/633, verify-ui.mjs (57 direction rows, 2 landscape log pages, theme toggle -> data-theme=dark, 6 HOS rules, Escape closes, mobile no overflow). Every moved block diffed byte-identical against HEAD.
 [done] Cleaned up: deleted the throwaway spotter2-probe project; confirmed backend/.env.local and frontend/.vercel are gitignored; .serena/ added to .gitignore.
+[done] Fix confirmed: after the repo-local git email was corrected, the backend deployed READY and the frontend READY in 17s. The commit-author check was the whole cause.
+[done] LIVE VERIFICATION PASSED: verify_contract.py against the hosted backend 633/633; verify-ui.mjs against the hosted frontend green (57 direction rows fetched cross-origin, 2 landscape log pages, theme toggle, 6 HOS rules, Escape closes, mobile no overflow, no console errors). Live plan HTTP 200 in 4.4s (was 6s). Live bundle references spotter2-eld-api-rose.
+
 
 

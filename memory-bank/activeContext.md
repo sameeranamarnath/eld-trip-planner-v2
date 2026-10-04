@@ -30,7 +30,7 @@ ALL work happens inside `c:\projects\assessments\spotter2` only. Do not touch `.
 T7 AND T13 ARE DONE. Backend `https://spotter2-eld-api-rose.vercel.app` (health 200, plan 200),
 frontend `https://spotter2-eld-web.vercel.app` (200, bundle carries the API URL). Refactor pass
 committed at `7628be7`; the full programme below is complete and verified.
-Left to do: redeploy both apps with the refactored code and re-run the live end-to-end checks.
+Both apps are REDEPLOYED with the refactor and the live end-to-end checks pass.
 
 ## Vercel deploy facts (learned the hard way)
 - **A deploy that comes back `readyState: BLOCKED` is almost always the commit-author check.**
@@ -51,11 +51,16 @@ Left to do: redeploy both apps with the refactored code and re-run the live end-
   frontend's `VITE_API_BASE_URL` points there.
 - Token lives in `C:\projects\assessments\spotter\.env` as `VERCEL_TOKEN` (the sibling project).
 
+## Live verification (re-run any time, no servers needed)
+- `python backend/scripts/verify_contract.py https://spotter2-eld-api-rose.vercel.app/api/v1`
+  -> 633/633 (672.3 mi, 2 sheets, 6 stops, both days 24:00). A live plan is HTTP 200 in ~4.4s.
+- `APP_URL=https://spotter2-eld-web.vercel.app node frontend/scripts/verify-ui.mjs`
+  -> 57 direction rows, 2 landscape log pages, theme toggle, 6 HOS rules, mobile with no overflow.
+
 ## Next steps
-1. Redeploy backend, then frontend (sequentially) and re-verify live:
-   `verify_contract.py https://spotter2-eld-api-rose.vercel.app/api/v1` and
-   `APP_URL=https://spotter2-eld-web.vercel.app node scripts/verify-ui.mjs`.
-2. The user records their own Loom against `docs/recording/voiceover-script.md`.
+1. The user records their own Loom against `docs/recording/voiceover-script.md`.
+2. The local dev servers (Vite 5173 / Django 8090) are stopped - `npm run dev` and
+   `python manage.py runserver 127.0.0.1:8090` bring them back for local work.
 
 
 ## T13 refactor programme (verify after every step)
