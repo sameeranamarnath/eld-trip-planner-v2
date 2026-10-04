@@ -167,8 +167,13 @@ Then: redeploy both projects and re-verify live end to end.
    to shorten the upload). The deployment is created server-side, so even a local CLI that is
    killed still finishes the build and moves the production alias - poll
    `npx vercel ls <project>` to confirm `Ready`.
-2. The user records their own Loom against `docs/recording/voiceover-script.md` and
-   `docs/video/spotter2-loom-reference.mp4`.
+2. The walkthrough video for the submission is built and lives OUTSIDE the repo, in
+   `c:\projects\assessments\spotter2-submission-video`: `spotter-eld-walkthrough.mp4`
+   (4:08, 1920x1080, burned-in captions + soft .srt), `spotter-eld-walkthrough.srt` and
+   `voiceover-script.md`. Rebuild with `python make_video.py`; re-capture the app shots
+   with `node capture-app.mjs` (needs puppeteer-core, in that folder's node_modules).
+   The older `docs/video/` kit in THIS repo is the pre-de-cruft reference and is now
+   superseded - do not rebuild from it (its screenshots still show the removed panel).
 
 ## Everything else is done and verified
 - T1-T6, T9-T12, T8 complete. `specs/submission-ranking/tasks.md` has the checklist and a
