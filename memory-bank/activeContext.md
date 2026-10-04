@@ -27,10 +27,13 @@ narrates the frozen feature set.
 ALL work happens inside `c:\projects\assessments\spotter2` only. Do not touch `..\spotter`.
 
 ## Current focus
-T2 (glass minimalist restyle) IS LIVE, and T7/T13 remain green. `frontend/src/styles.css` is the
-only file that changed - no JSX, every class name preserved - committed `3148a3c` and pushed.
-`https://spotter2-eld-web.vercel.app` serves `assets/index-CGXxAtpl.css` (byte-identical to the
-locally verified build) and the API is healthy at `https://spotter2-eld-api-rose.vercel.app`.
+T2 (glass restyle) and T14 (UI de-cruft) are both LIVE. The planner now shows only what plans a
+trip: the form, the trip summary, the route map with its stops, the route instructions and the
+log sheets. Every explainer is gone - the HOS rules dialog, the header rule chips, the
+empty-state feature grid, the preset example trips and the `?run=1` demo deep-link - together
+with the dead CSS and icons they left behind (net -468 lines; CSS 39.78 -> 37.01 kB, JS 339.7 ->
+332.4 kB). `https://spotter2-eld-web.vercel.app` serves that build and the API is healthy at
+`https://spotter2-eld-api-rose.vercel.app`. Last commit `e3fb04e`.
 
 ## Vercel deploy facts (learned the hard way)
 - **A deploy that comes back `readyState: BLOCKED` is almost always the commit-author check.**
@@ -138,6 +141,10 @@ Then: redeploy both projects and re-verify live end to end.
   after rendering, before the encode).
 
 ## Ruled out (do not retry)
+- Explainer UI inside the app: a rules dialog, rule chips in the header, a feature grid on the
+  empty state, preset example trips. It reads as padding - and the rules dialog was citing an
+  "Assessment assumption" in shipped product copy. The planner reports the numbers it produced;
+  it does not teach the regulation to the user. See T14 in progress.md for what was removed.
 - Live screen capture as the desktop backdrop - other agents' windows pollute it. Use the
   wallpaper file directly.
 - PIL for compositing - not installed; compose in HTML and screenshot with headless Edge.
