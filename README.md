@@ -1,6 +1,6 @@
-# Spotter ELD Trip Planner
+# ELD Trip Planner (v2)
 
-A full-stack take-home. Give it where the truck is now, a pickup, a drop-off and how many
+Give it where the truck is now, a pickup, a drop-off and how many
 hours are already used on the 70-hour cycle, and it returns:
 
 - a legal **truck route** on a map, with every required stop pinned at the mile it happens,
@@ -15,7 +15,7 @@ hours are already used on the 70-hour cycle, and it returns:
   themes; the log sheet stays white in both, because it is a paper form.
 - **Accuracy** - the drawn sheet carries all eleven elements 49 CFR 395.8(d) requires, and
   the header says which time base the grid is on.
-- **Walkthrough video** - [`docs/video/spotter2-walkthrough.mp4`](docs/video/spotter2-walkthrough.mp4)
+- **Walkthrough video** - [`docs/video/walkthrough.mp4`](docs/video/walkthrough.mp4)
   (4:00, 1920x1080, burned-in subtitles, `.srt` sidecar).
 
 ## How it works
@@ -58,8 +58,8 @@ remaining fuel distance falls inside the break window.
 ### Backend
 
 ```bash
-python -m venv spotter2                      # from the repo root
-spotter2\Scripts\activate                    # Windows;  source spotter2/bin/activate elsewhere
+python -m venv .venv                      # from the repo root
+.venv\Scripts\activate                    # Windows;  source .venv/bin/activate elsewhere
 pip install -r backend/requirements.txt
 cd backend
 python manage.py runserver 8090
@@ -135,7 +135,7 @@ material for it lives here:
 - [`docs/recording/voiceover-script.md`](docs/recording/voiceover-script.md) - 22 beats with
   timecodes, the exact words to say, what is on screen at each one, and what to cut first if
   you run long.
-- [`docs/video/spotter2-loom-reference.mp4`](docs/video/spotter2-loom-reference.mp4) - the
+- [`docs/video/loom-reference.mp4`](docs/video/loom-reference.mp4) - the
   same 22 beats as a Loom-style reference: webcam bubble, chapter tag, elapsed clock, a
   progress bar, and the narration as a teleprompter line. **4:10**, inside the 5-minute cap.
   It is a target to record against, not the submitted video.
@@ -156,7 +156,7 @@ Nothing needs a database or a paid key. Two pieces, deployed separately:
 
 - **Render** - commit `render.yaml` and create a Blueprint. It builds `backend/` and starts
   `gunicorn config.wsgi:application`; `gunicorn` is pinned in `backend/requirements.txt`.
-- **Docker** - `docker build -t spotter-eld . && docker run -p 8000:8000 spotter-eld`.
+- **Docker** - `docker build -t eld-trip-planner . && docker run -p 8000:8000 spotter-eld`.
   Works anywhere that runs containers (Fly.io, Railway, Cloud Run).
 - **Vercel (serverless)** - push `backend/`. Vercel's Django preset resolves the app from
   `WSGI_APPLICATION`, so no `rewrites` are needed - a catch-all rewrite passes `/api/index.py`
